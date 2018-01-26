@@ -49,5 +49,6 @@ $ CUMULUS_ENV=testing nosetests -v -s
 
 ### Linting
 
-     $ pylint run_cumulus_task.py
-
+```
+$ pylint run_cumulus_task.py
+```

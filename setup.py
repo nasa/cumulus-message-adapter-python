@@ -40,5 +40,8 @@ setup(
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),  # Required
     py_modules=['run_cumulus_task'],
-    install_requires=['cumulus-message-adapter', 'jsonschema'],  # Optional
+    dependency_links=[
+        'git+https://github.com/cumulus-nasa/cumulus-message-adapter.git#egg=cumulus_message_adapter',
+    ]
+    install_requires=['cumulus-message-adapter'],  # Optional
 )
