@@ -38,10 +38,7 @@ setup(
         'Programming Language :: Python :: 2.7',
     ],
     keywords='nasa cumulus',  # Optional
-    packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),  # Required
+    packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),
     py_modules=['run_cumulus_task'],
-    dependency_links=[
-        'git+https://github.com/cumulus-nasa/cumulus-message-adapter.git#egg=cumulus_message_adapter',
-    ],
-    install_requires=['cumulus-message-adapter'],  # Optional
+    install_requires=['cumulus-message-adapter'],
 )
