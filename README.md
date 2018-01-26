@@ -2,12 +2,34 @@
 
 [![CircleCI](https://circleci.com/gh/cumulus-nasa/cumulus-message-adapter-python.svg?style=svg)](https://circleci.com/gh/cumulus-nasa/cumulus-message-adapter-python)
 
+## Install
+
+```
+$ pip install git+https://github.com/cumulus-nasa/cumulus-message-adapter-python.git
+```
+
+## Example
+
+```py
+from run_cumulus_task import run_cumulus_task
+
+# simple task that returns the event
+def task(event, context):
+    return event
+
+# handler that is provided to aws lambda
+def handler(event, context):
+    return run_cumulus_task(task, event, context)
+```
+
 ## Development
 
 ### Dependency Installation
 
-    $ pip install -r requirements-dev.txt
-    $ pip install -r requirements.txt
+```
+$ pip install -r requirements-dev.txt
+$ pip install -r requirements.txt
+```
 
 ### Running Tests
 
@@ -27,5 +49,5 @@ $ CUMULUS_ENV=testing nosetests -v -s
 
 ### Linting
 
-     $ pylint handler
+     $ pylint run_cumulus_task.py
 

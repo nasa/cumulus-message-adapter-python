@@ -14,7 +14,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 # Fields marked as "Optional" may be commented out.
 
 setup(
-    name='cumulus-message-adapter-python',  # Required
+    name='cumulus_message_adapter_python',  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
@@ -39,5 +39,6 @@ setup(
     ],
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),  # Required
+    py_modules=['run_cumulus_task'],
     install_requires=['cumulus-message-adapter', 'jsonschema'],  # Optional
 )

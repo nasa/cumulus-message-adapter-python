@@ -1,6 +1,6 @@
 import unittest
 from os import path
-from handler.handler import handler
+from run_cumulus_task import run_cumulus_task
 
 def create_event ():
     return {
@@ -39,7 +39,7 @@ class TestSledHandler(unittest.TestCase):
 
         handler_config = create_handler_config()
         test_event = create_event()
-        response = handler(test_event, {}, handler_fn, handler_config) 
+        response = run_cumulus_task(handler_fn, test_event, {}) 
 
         self.assertTrue(response['cumulus_meta']['task'] == 'Example')
         self.assertTrue(response['payload']['input']['anykey'] == 'anyvalue')
