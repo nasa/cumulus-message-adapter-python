@@ -10,6 +10,8 @@ $ pip install git+https://github.com/cumulus-nasa/cumulus-message-adapter-python
 
 ## Example
 
+Simple example of using this package's `run_cumulus_task` function as a wrapper around another function:
+
 ```py
 from run_cumulus_task import run_cumulus_task
 
@@ -21,6 +23,10 @@ def task(event, context):
 def handler(event, context):
     return run_cumulus_task(task, event, context)
 ```
+
+### Full example
+
+For a full example see the [example folder](./example).
 
 ## Development
 
@@ -52,3 +58,7 @@ $ CUMULUS_ENV=testing nosetests -v -s
 ```
 $ pylint run_cumulus_task.py
 ```
+
+## License
+
+[Apache 2.0](LICENSE)
