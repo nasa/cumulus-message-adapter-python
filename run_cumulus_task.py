@@ -17,7 +17,7 @@ def run_cumulus_task(task_function, cumulus_message, context):
         context -- an AWS Lambda context dict
     """
 
-    message_adapter_disabled = os.environ['CUMULUS_MESSAGE_ADAPTER_DISABLED']
+    message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
 
     if message_adapter_disabled:
         return task_function(cumulus_message, context)
