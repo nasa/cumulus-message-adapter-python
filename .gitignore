@@ -4,3 +4,4 @@ tmp
 *.egg-info
 .vscode
 src
+task.zip
