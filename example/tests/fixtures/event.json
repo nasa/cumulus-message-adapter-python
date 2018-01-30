@@ -1,25 +1,19 @@
 {
   "cumulus_meta": {
-    "stack": "lpdaac-cumulus",
+    "stack": "example",
     "buckets": {
-      "internal": "cumulus-devseed-internal",
-      "private": "cumulus-devseed-private",
-      "protected": "cumulus-devseed-protected",
-      "public": "cumulus-devseed-public"
+      "internal": "example-internal",
+      "private": "example-private",
+      "protected": "example-protected",
+      "public": "example-public"
     },
     "message_source": "sfn",
     "state_machine": "arn:aws:states:us-east-1:433612427488:stateMachine:LpdaacCumulusDiscoverPdrsSt-s1KcHE6MgsTJ",
-    "workflow_name": "DiscoverPdrs",
+    "workflow_name": "ExampleWorkflow",
     "execution_name": "16b2cb46ae879f09047dfa677",
     "createdAt": 1517326755526
   },
   "meta": {
-    "cmr": {
-      "username": "devseed",
-      "provider": "CUMULUS",
-      "clientId": "CUMULUS",
-      "password": "HjI6ZaAnM3D1/aCQwynYA458ZB3MyhoVL1btubt5oTLSqKzLr/ea8XDJp9VAhKhr2y+Yvrv8WKIcOrDj4FtnFReYNV/N9Ou2E3fJMz0gecVP8UWnQI4ybYcsaAcQJE2DaoeRv/b90bPBs2W048Zc6z8oT68gzf8DhHxn8S5NS0L4uhDNV+wIbWPCcZ/E+ID5HlM2zjKP4tXfV8DBEW8Wzv5p6ImKacBY8CVoTxqug+dMwqfq+Sy61Uo+wAga28gKWgCog6xXa/k/AzF/4Unn3Er0lVpFtlyEIRthD5jl+tgkHS85Hvs/Au2AGu4sud2Sl+C4idXlbk0DCRP/0u+KIQ=="
-    },
     "distribution_endpoint": "https://g928e05in1.execute-api.us-east-1.amazonaws.com/dev/",
     "topic_arn": "arn:aws:sns:us-east-1:433612427488:lpdaac-cumulus-sftrackerSns-GIMUQEBE00QB",
     "queues": {
@@ -34,46 +28,8 @@
       "protocol": "http"
     },
     "collection": {
-      "process": "aster",
-      "duplicateHandling": "replace",
-      "provider_path": "/TEST_B/Cumulus/PDR/",
-      "granuleIdExtraction": "^pg-[P|B]R(1A.*)$",
-      "version": "003",
-      "dataType": "AST_L1A",
-      "files": [
-        {
-          "bucket": "private",
-          "sampleFileName": "pg-PR1A0000-2016121001_000_001",
-          "regex": "^(pg-PR1A[0-9]{4}-[0-9]{10}_[0-9]{3}_[0-9]{3})$"
-        },
-        {
-          "bucket": "protected",
-          "sampleFileName": "AST_L1A_00301052017002700_02242017094829.hdf",
-          "regex": "^AST_L1A_[\\d]*_[\\d]*\\.hdf$"
-        },
-        {
-          "bucket": "private",
-          "sampleFileName": "pg-BR1A0000-2016121001_000_001",
-          "regex": "^(pg-BR1A[0-9]{4}-[0-9]{10}_[0-9]{3}_[0-9]{3})$"
-        },
-        {
-          "bucket": "protected",
-          "sampleFileName": "AST_L1A_00301052017002700_02242017094829.cmr.xml",
-          "regex": "^AST_L1A_[\\d]*_[\\d]*\\.cmr\\.xml$"
-        },
-        {
-          "bucket": "public",
-          "sampleFileName": "AST_L1A_00301052017002700_02242017094829_2.jpg",
-          "regex": "^AST_L1A_[\\d]*_[\\d]*_.*\\.jpg$"
-        }
-      ],
-      "updatedAt": 1517326637137,
-      "createdAt": 1517326637117,
-      "granuleId": "^1A[\\d]{4}-[\\d]{10}_[\\d]{3}_[\\d]{3}$",
-      "sampleFileName": "pg-PR1A0000-2016121001_001_011",
-      "name": "AST_L1A"
-    },
-    "status": "running"
+      "example": "collection"
+    }
   },
   "workflow_config": {
     "DiscoverPdrs": {
