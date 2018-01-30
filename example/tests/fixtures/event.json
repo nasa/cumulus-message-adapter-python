@@ -1,5 +1,6 @@
 {
   "cumulus_meta": {
+    "task": "ExampleTask",
     "stack": "example",
     "buckets": {
       "internal": "example-internal",
@@ -7,7 +8,7 @@
       "protected": "example-protected",
       "public": "example-public"
     },
-    "message_source": "sfn",
+    "message_source": "local",
     "state_machine": "arn:aws:states:us-east-1:433612427488:stateMachine:LpdaacCumulusDiscoverPdrsSt-s1KcHE6MgsTJ",
     "workflow_name": "ExampleWorkflow",
     "execution_name": "16b2cb46ae879f09047dfa677",
