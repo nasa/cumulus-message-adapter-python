@@ -24,7 +24,7 @@ def run_cumulus_task(task_function, cumulus_message, context):
 
     adapter = message_adapter()
     full_event = adapter.loadRemoteEvent(cumulus_message)
-    nested_event = adapter.loadNestedEvent(full_event, context)
+    nested_event = adapter.loadNestedEvent(full_event, vars(context))
     message_config = nested_event.get('messageConfig', {})
     task_response = task_function(nested_event, context)
     return adapter.createNextEvent(task_response, full_event, message_config)
