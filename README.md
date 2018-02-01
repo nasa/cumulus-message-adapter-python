@@ -28,6 +28,21 @@ def handler(event, context):
 
 For a full example see the [example folder](./example).
 
+## Usage in a Cumulus Deployment
+During deployment, Cumulus will automatically obtain and inject the [Cumulus Message Adapter](https://github.com/cumulus-nasa/cumulus-message-adapter) zip into the compiled code and create a zip file to be deployed to Lambda.
+
+The example task in the [example folder](./example) of this repository would be configured in lambdas.yml as follows:
+
+```yaml
+PythonExample:
+  handler: task.handler
+  timeout: 300
+  source: './example'
+  useSled: true
+  runtime: python2.7
+  memory: 256
+```
+
 ## Development
 
 ### Dependency Installation
