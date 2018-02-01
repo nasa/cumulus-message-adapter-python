@@ -31,6 +31,9 @@ def create_handler_config():
         }
     }
 
+class LambdaContextMock:
+    example = "context"
+
 class TestSledHandler(unittest.TestCase):
 
     def test_simple_handler(self):
@@ -39,7 +42,8 @@ class TestSledHandler(unittest.TestCase):
 
         handler_config = create_handler_config()
         test_event = create_event()
-        response = run_cumulus_task(handler_fn, test_event, {}) 
+        context = LambdaContextMock()
+        response = run_cumulus_task(handler_fn, test_event, context) 
 
         self.assertTrue(response['cumulus_meta']['task'] == 'Example')
         self.assertTrue(response['payload']['input']['anykey'] == 'anyvalue')
