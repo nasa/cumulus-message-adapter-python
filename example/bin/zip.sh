@@ -17,9 +17,5 @@ zip "$PROJECT_DIR/task.zip" -X -r ./* -x '*.git*' '*bin*' 'task/'
 cd "$VIRTUAL_ENV/lib/python2.7/site-packages/"
 zip -r9 "$PROJECT_DIR/task.zip" ./*
 
-# include deps from virtualenv src
-cd $VIRTUAL_ENV/src/
-zip -r9 "$PROJECT_DIR/task.zip" ./*
-
 # back to task dir
 cd $PROJECT_DIR

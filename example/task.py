@@ -1,11 +1,6 @@
 import os
 import sys
 
-# dir = os.path.dirname(os.path.realpath(__file__))
-# sys.path.append(dir)
-
-print sys.path
-
 from run_cumulus_task import run_cumulus_task
 
 def task(event, context):
