@@ -28,13 +28,17 @@ def run_cumulus_task(task_function, cumulus_message, context):
 
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
 
-    if message_adapter_disabled is True:
+    if message_adapter_disabled is 'true':
         try:
             return task_function(cumulus_message, context)
         except Exception as exception:
-            cumulus_message['payload'] = None
-            cumulus_message['exception'] = 'WorkflowError'
-            return cumulus_message
+            name = exception.args[0]
+            if ('WorkflowError' in name):                
+                cumulus_message['payload'] = None
+                cumulus_message['exception'] = name
+                return cumulus_message
+            else:
+                raise exception 
 
     adapter = message_adapter()
     full_event = adapter.loadRemoteEvent(cumulus_message)
@@ -42,10 +46,14 @@ def run_cumulus_task(task_function, cumulus_message, context):
     message_config = nested_event.get('messageConfig', {})
 
     try:
-        return task_function(cumulus_message, context)
+        task_response = task_function(cumulus_message, context)
     except Exception as exception:
-        cumulus_message['payload'] = None
-        cumulus_message['exception'] = 'WorkflowError'
-        return cumulus_message
+        name = exception.args[0]
+        if ('WorkflowError' in name):                
+            cumulus_message['payload'] = None
+            cumulus_message['exception'] = name
+            return cumulus_message
+        else:
+            raise exception
 
     return adapter.createNextEvent(task_response, full_event, message_config)
