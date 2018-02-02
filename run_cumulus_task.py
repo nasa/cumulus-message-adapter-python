@@ -12,9 +12,6 @@ if os.path.isfile('cumulus-message-adapter.zip'):
 
 from message_adapter.message_adapter import message_adapter
 
-class WorkflowError(Exception):
-    pass
-
 def run_cumulus_task(task_function, cumulus_message, context):
     """
     Interprets incoming messages, passes them to an inner handler, gets the response
