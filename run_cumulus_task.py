@@ -12,6 +12,9 @@ if os.path.isfile('cumulus-message-adapter.zip'):
 
 from message_adapter.message_adapter import message_adapter
 
+class WorkflowError(Exception):
+    pass
+
 def run_cumulus_task(task_function, cumulus_message, context):
     """
     Interprets incoming messages, passes them to an inner handler, gets the response
@@ -25,8 +28,13 @@ def run_cumulus_task(task_function, cumulus_message, context):
 
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
 
-    if message_adapter_disabled:
-        return task_function(cumulus_message, context)
+    if message_adapter_disabled is True:
+        try:
+            return task_function(cumulus_message, context)
+        except Exception as exception:
+            cumulus_message['payload'] = None
+            cumulus_message['exception'] = 'WorkflowError'
+            return cumulus_message
 
     adapter = message_adapter()
     full_event = adapter.loadRemoteEvent(cumulus_message)
@@ -34,8 +42,10 @@ def run_cumulus_task(task_function, cumulus_message, context):
     message_config = nested_event.get('messageConfig', {})
 
     try:
-        task_response = task_function(nested_event, context)
-    except:
-        raise Exception("WorkflowError")
+        return task_function(cumulus_message, context)
+    except Exception as exception:
+        cumulus_message['payload'] = None
+        cumulus_message['exception'] = 'WorkflowError'
+        return cumulus_message
 
     return adapter.createNextEvent(task_response, full_event, message_config)

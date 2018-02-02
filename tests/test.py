@@ -44,7 +44,41 @@ class TestSledHandler(unittest.TestCase):
         test_event = create_event()
         context = LambdaContextMock()
         response = run_cumulus_task(handler_fn, test_event, context) 
-
         self.assertTrue(response['cumulus_meta']['task'] == 'Example')
-        self.assertTrue(response['payload']['input']['anykey'] == 'anyvalue')
+        self.assertTrue(response['payload']['anykey'] == 'anyvalue')
         self.assertTrue(response)
+
+    def test_workflow_error(self):
+        def workflow_error_fn(event, context):
+            raise Exception('WorkflowError')
+
+        handler_config = create_handler_config()
+        test_event = create_event()
+        context = LambdaContextMock()
+
+        response = run_cumulus_task(workflow_error_fn, test_event, context)
+        self.assertTrue(response['exception'] is 'WorkflowError')
+
+    def test_other_error(self):
+        def other_error_fn(event, context):
+            raise Exception('SomeError')
+
+        handler_config = create_handler_config()
+        test_event = create_event()
+        context = LambdaContextMock()
+
+        try:
+            response = run_cumulus_task(other_error_fn, test_event, context) 
+        except Exception as exception:
+            name = exception.args
+            self.assertTrue(name is 'SomeError')
+
+    def test_message_adapter_disabled(self):
+        def disabled_adapter_handler_fn(event, context):
+            return { "message": "hello" }
+
+        handler_config = create_handler_config()
+        test_event = create_event()
+        context = LambdaContextMock()
+        response = run_cumulus_task(disabled_adapter_handler_fn, test_event, context) 
+        self.assertTrue(response["message"] is "hello")
