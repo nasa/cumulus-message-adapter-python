@@ -11,7 +11,8 @@ def create_event ():
       "cumulus_meta": {
         "task": "Example",
         "message_source": "local",
-        "id": "id-1234"
+        "id": "id-1234",
+        "execution_name": "123123"
       },
       "meta": { "foo": "bar" },
       "payload": { "anykey": "anyvalue" }
@@ -30,4 +31,6 @@ def create_handler_config():
     }
 
 class LambdaContextMock:
-    example = "context"
+    function_name = "example"
+    def __getitem__(self, item):
+        return getattr(self, item)
