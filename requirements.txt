@@ -1,2 +1,1 @@
 git+git://github.com/cumulus-nasa/cumulus-message-adapter.git#egg=cumulus-message-adapter
-python-json-logger==0.1.8
