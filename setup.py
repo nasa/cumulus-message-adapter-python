@@ -39,6 +39,6 @@ setup(
     ],
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),
-    py_modules=['run_cumulus_task'],
+    py_modules=['run_cumulus_task', 'cumulus_logger'],
     install_requires=['cumulus-message-adapter'],
 )

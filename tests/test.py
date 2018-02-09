@@ -31,7 +31,7 @@ class TestSledHandler(unittest.TestCase):
     
     def test_other_error(self):
         def other_error_fn(event, context):
-            raise Exception('SomeError')
+            raise Exception('SomeError', 'huh')
     
         handler_config = create_handler_config()
         test_event = create_event()
