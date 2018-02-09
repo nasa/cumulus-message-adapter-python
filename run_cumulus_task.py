@@ -5,7 +5,7 @@ and transforms it into an outgoing message, returned by Lambda.
 import os
 import sys
 
-from cumulus_logger import log
+from cumulus_logger import CumulusLogger
 # if the message adapter zip file has been included, put it in the path
 # it'll be used instead of the version from the requirements file
 if os.path.isfile('cumulus-message-adapter.zip'):
@@ -25,6 +25,7 @@ def run_cumulus_task(task_function, cumulus_message, context):
         schema_location -- optional. location of input, config, and output schemas of the task
     """
 
+    logger = CumulusLogger(cumulus_message, context)
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
 
     if message_adapter_disabled is 'true':
@@ -35,10 +36,10 @@ def run_cumulus_task(task_function, cumulus_message, context):
             if ('WorkflowError' in name):                
                 cumulus_message['payload'] = None
                 cumulus_message['exception'] = name
-                log({ "message": "WorkflowError", "level": "error" })
+                logger.log({ "message": "WorkflowError", "level": "error" })
                 return cumulus_message
             else:
-                log({ "message": str(exception), "level": "error" })
+                logger.log({ "message": str(exception), "level": "error" })
                 raise exception 
 
     adapter = message_adapter()
@@ -53,10 +54,10 @@ def run_cumulus_task(task_function, cumulus_message, context):
         if ('WorkflowError' in name):                
             cumulus_message['payload'] = None
             cumulus_message['exception'] = name
-            log({ "message": "WorkflowError", "level": "error" })
+            logger.log({ "message": "WorkflowError", "level": "error" })
             return cumulus_message
         else:
-            log({ "message": str(exception), "level": "error" })
+            logger.log({ "message": str(exception), "level": "error" })
             raise exception
 
     return adapter.createNextEvent(task_response, full_event, message_config)
