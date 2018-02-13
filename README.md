@@ -54,13 +54,14 @@ must be communicated to those using the task.
 ## Cumulus Message Adapter interface
 
 The Cumulus Message adapter for python provides one method:
-`run_cumulus_task`. It takes three parameters:
+`run_cumulus_task`. It takes four parameters:
 
   * `task_function` - the function containing your business logic (as described
     above)
   * `cumulus_message` - the event passed by Lambda, and should be a Cumulus
     Message
   * `context` - the Lambda context
+  * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be set to the filepath of the corresponding JSON schema file
 
 ## Example
 
