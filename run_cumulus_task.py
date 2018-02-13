@@ -13,7 +13,7 @@ if os.path.isfile('cumulus-message-adapter.zip'):
 
 from message_adapter.message_adapter import message_adapter
 
-def run_cumulus_task(task_function, cumulus_message, context):
+def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
     """
     Interprets incoming messages, passes them to an inner handler, gets the response
     and transforms it into an outgoing message, returned by Lambda.
@@ -22,7 +22,7 @@ def run_cumulus_task(task_function, cumulus_message, context):
         task_function -- required. the function containing the business logic of the cumulus task
         cumulus_message -- required. either a full Cumulus Message or a Cumulus Remote Message
         context -- an AWS Lambda context dict
-        schema_location -- optional. location of input, config, and output schemas of the task
+        schemas -- optional. location of input, config, and output schemas of the task
     """
 
     logger = CumulusLogger(cumulus_message, context)
@@ -42,7 +42,7 @@ def run_cumulus_task(task_function, cumulus_message, context):
                 logger.log({ "message": str(exception), "level": "error" })
                 raise exception 
 
-    adapter = message_adapter()
+    adapter = message_adapter(schemas)
     full_event = adapter.loadRemoteEvent(cumulus_message)
     nested_event = adapter.loadNestedEvent(full_event, vars(context))
     message_config = nested_event.get('messageConfig', {})
