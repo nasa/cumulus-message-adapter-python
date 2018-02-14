@@ -31,6 +31,8 @@ def create_handler_config():
     }
 
 class LambdaContextMock:
-    function_name = "example"
+    def __init__(self):
+        self.function_name = "function_name_example"
+
     def __getitem__(self, item):
         return getattr(self, item)
