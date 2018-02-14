@@ -111,6 +111,56 @@ $ pip install -r requirements-dev.txt
 $ pip install -r requirements.txt
 ```
 
+### Logging with `CumulusLogger`
+
+Included in this package is the `cumulus_logger` which contains a logging class `CumulusLogger` that standardizes the log format for Cumulus. Methods are provided to log error, fatal, warning, debug, info, and trace. 
+
+**Import the `CumulusLogger` class:**
+
+```python
+from cumulus_logger import CumulusLogger
+```
+
+**Instantiate the logger inside the task definition:**
+
+```python
+logger = CumulusLogger(event, context)
+```
+
+**Use the logging methods for different levels:**
+
+```python
+logger.trace('<your message>')
+logger.debug('<your message>')
+logger.info('<your message>')
+logger.warn('<your message>')
+logger.error('<your message>')
+logger.fatal('<your message>')
+```
+
+**Example usage:**
+
+```python
+import os
+import sys
+
+from run_cumulus_task import run_cumulus_task
+from cumulus_logger import CumulusLogger
+
+# instantiate CumulusLogger
+logger = CumulusLogger()
+
+def task(event, context):
+    logger.info('task executed')
+    # return the output of the task
+    return { "example": "output" }
+
+def handler(event, context):
+    # make sure event & context metadata is set in the logger
+    logger.setMetadata(event, context)
+    return run_cumulus_task(task, event, context)
+```
+
 ### Running Tests
 
 Running tests requires [localstack](https://github.com/localstack/localstack).

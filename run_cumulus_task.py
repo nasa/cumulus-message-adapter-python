@@ -25,7 +25,8 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
         schemas -- optional. location of input, config, and output schemas of the task
     """
 
-    logger = CumulusLogger(cumulus_message, context)
+    logger = CumulusLogger()
+    logger.setMetadata(cumulus_message, context)
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
 
     if message_adapter_disabled is 'true':
@@ -48,7 +49,7 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
     message_config = nested_event.get('messageConfig', {})
 
     try:
-        task_response = task_function(cumulus_message, context)
+        task_response = task_function(nested_event, context)
     except Exception as exception:
         name = exception.args[0]
         if ('WorkflowError' in name):                
