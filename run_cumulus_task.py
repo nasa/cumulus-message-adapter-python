@@ -19,10 +19,12 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
     and transforms it into an outgoing message, returned by Lambda.
 
     Arguments:
-        task_function -- required. the function containing the business logic of the cumulus task
-        cumulus_message -- required. either a full Cumulus Message or a Cumulus Remote Message
-        context -- an AWS Lambda context dict
-        schemas -- optional. location of input, config, and output schemas of the task
+        task_function -- Required. The function containing the business logic of the cumulus task
+        cumulus_message -- Required. Either a full Cumulus Message or a Cumulus Remote Message
+        context -- AWS Lambda context dict
+        schemas -- Optional. A dict with filepaths of `input`, `config`, and `output` schemas that are relative to the task root directory. 
+            All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`,
+            and if not found there, will be ignored.
     """
 
     logger = CumulusLogger()

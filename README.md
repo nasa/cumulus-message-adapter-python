@@ -61,7 +61,7 @@ The Cumulus Message adapter for python provides one method:
   * `cumulus_message` - the event passed by Lambda, and should be a Cumulus
     Message
   * `context` - the Lambda context
-  * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be set to the filepath of the corresponding JSON schema file
+  * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be a string set to the filepath of the corresponding JSON schema file. All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`, and if not found there, will be ignored.
 
 ## Example
 
