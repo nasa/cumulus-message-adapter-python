@@ -1,0 +1,7 @@
+{
+  "properties": {
+    "example_option": {
+      "type": "boolean"
+    }
+  }
+}

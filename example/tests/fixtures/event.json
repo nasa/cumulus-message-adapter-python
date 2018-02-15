@@ -41,6 +41,8 @@
       "collection": "{{$.meta.collection}}"
     }
   },
-  "payload": {},
+  "payload": {
+    "hello": "world"
+  },
   "exception": null
 }

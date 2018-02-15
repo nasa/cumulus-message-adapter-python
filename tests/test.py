@@ -14,7 +14,7 @@ class TestSledHandler(unittest.TestCase):
         response = run_cumulus_task(handler_fn, test_event, context)
         self.assertTrue(response['cumulus_meta']['task'] == 'Example')
         # payload includes the entire event
-        self.assertTrue(response['payload']['payload']['anykey'] == 'anyvalue')
+        self.assertTrue(response['payload']['input']['anykey'] == 'anyvalue')
         self.assertTrue(response)
 
     def test_workflow_error(self):
@@ -24,7 +24,6 @@ class TestSledHandler(unittest.TestCase):
         handler_config = create_handler_config()
         test_event = create_event()
         context = LambdaContextMock()
-    
         response = run_cumulus_task(workflow_error_fn, test_event, context)
         self.assertTrue(response['payload'] is None)
         self.assertTrue(response['exception'] is 'SomeWorkflowError')
@@ -36,7 +35,6 @@ class TestSledHandler(unittest.TestCase):
         handler_config = create_handler_config()
         test_event = create_event()
         context = LambdaContextMock()
-    
         try:
             response = run_cumulus_task(other_error_fn, test_event, context)
         except Exception as exception:

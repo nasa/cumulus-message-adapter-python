@@ -5,6 +5,7 @@ and transforms it into an outgoing message, returned by Lambda.
 import os
 import sys
 
+from cumulus_logger import CumulusLogger
 # if the message adapter zip file has been included, put it in the path
 # it'll be used instead of the version from the requirements file
 if os.path.isfile('cumulus-message-adapter.zip'):
@@ -12,17 +13,22 @@ if os.path.isfile('cumulus-message-adapter.zip'):
 
 from message_adapter.message_adapter import message_adapter
 
-def run_cumulus_task(task_function, cumulus_message, context):
+def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
     """
     Interprets incoming messages, passes them to an inner handler, gets the response
     and transforms it into an outgoing message, returned by Lambda.
 
     Arguments:
-        task_function -- the function containing the business logic of the cumulus task
-        cumulus_message -- either a full Cumulus Message or a Cumulus Remote Message
-        context -- an AWS Lambda context dict
+        task_function -- Required. The function containing the business logic of the cumulus task
+        cumulus_message -- Required. Either a full Cumulus Message or a Cumulus Remote Message
+        context -- AWS Lambda context dict
+        schemas -- Optional. A dict with filepaths of `input`, `config`, and `output` schemas that are relative to the task root directory. 
+            All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`,
+            and if not found there, will be ignored.
     """
 
+    logger = CumulusLogger()
+    logger.setMetadata(cumulus_message, context)
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
 
     if message_adapter_disabled is 'true':
@@ -33,24 +39,28 @@ def run_cumulus_task(task_function, cumulus_message, context):
             if ('WorkflowError' in name):                
                 cumulus_message['payload'] = None
                 cumulus_message['exception'] = name
+                logger.log({ "message": "WorkflowError", "level": "error" })
                 return cumulus_message
             else:
+                logger.log({ "message": str(exception), "level": "error" })
                 raise exception 
 
-    adapter = message_adapter()
+    adapter = message_adapter(schemas)
     full_event = adapter.loadRemoteEvent(cumulus_message)
     nested_event = adapter.loadNestedEvent(full_event, vars(context))
     message_config = nested_event.get('messageConfig', {})
 
     try:
-        task_response = task_function(cumulus_message, context)
+        task_response = task_function(nested_event, context)
     except Exception as exception:
         name = exception.args[0]
         if ('WorkflowError' in name):                
             cumulus_message['payload'] = None
             cumulus_message['exception'] = name
+            logger.log({ "message": "WorkflowError", "level": "error" })
             return cumulus_message
         else:
+            logger.log({ "message": str(exception), "level": "error" })
             raise exception
 
     return adapter.createNextEvent(task_response, full_event, message_config)

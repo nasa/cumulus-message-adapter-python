@@ -54,13 +54,14 @@ must be communicated to those using the task.
 ## Cumulus Message Adapter interface
 
 The Cumulus Message adapter for python provides one method:
-`run_cumulus_task`. It takes three parameters:
+`run_cumulus_task`. It takes four parameters:
 
   * `task_function` - the function containing your business logic (as described
     above)
   * `cumulus_message` - the event passed by Lambda, and should be a Cumulus
     Message
   * `context` - the Lambda context
+  * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be a string set to the filepath of the corresponding JSON schema file. All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`, and if not found there, will be ignored.
 
 ## Example
 
@@ -108,6 +109,56 @@ PythonExample:
 ```
 $ pip install -r requirements-dev.txt
 $ pip install -r requirements.txt
+```
+
+### Logging with `CumulusLogger`
+
+Included in this package is the `cumulus_logger` which contains a logging class `CumulusLogger` that standardizes the log format for Cumulus. Methods are provided to log error, fatal, warning, debug, info, and trace. 
+
+**Import the `CumulusLogger` class:**
+
+```python
+from cumulus_logger import CumulusLogger
+```
+
+**Instantiate the logger inside the task definition:**
+
+```python
+logger = CumulusLogger(event, context)
+```
+
+**Use the logging methods for different levels:**
+
+```python
+logger.trace('<your message>')
+logger.debug('<your message>')
+logger.info('<your message>')
+logger.warn('<your message>')
+logger.error('<your message>')
+logger.fatal('<your message>')
+```
+
+**Example usage:**
+
+```python
+import os
+import sys
+
+from run_cumulus_task import run_cumulus_task
+from cumulus_logger import CumulusLogger
+
+# instantiate CumulusLogger
+logger = CumulusLogger()
+
+def task(event, context):
+    logger.info('task executed')
+    # return the output of the task
+    return { "example": "output" }
+
+def handler(event, context):
+    # make sure event & context metadata is set in the logger
+    logger.setMetadata(event, context)
+    return run_cumulus_task(task, event, context)
 ```
 
 ### Running Tests
