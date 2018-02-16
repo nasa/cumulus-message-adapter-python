@@ -43,7 +43,7 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
                 return cumulus_message
             else:
                 logger.log({ "message": str(exception), "level": "error" })
-                raise exception 
+                raise
 
     adapter = message_adapter(schemas)
     full_event = adapter.loadRemoteEvent(cumulus_message)
@@ -61,6 +61,6 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
             return cumulus_message
         else:
             logger.log({ "message": str(exception), "level": "error" })
-            raise exception
+            raise
 
     return adapter.createNextEvent(task_response, full_event, message_config)
