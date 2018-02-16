@@ -47,7 +47,8 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
 
     adapter = message_adapter(schemas)
     full_event = adapter.loadRemoteEvent(cumulus_message)
-    nested_event = adapter.loadNestedEvent(full_event, vars(context))
+    arn = context.invoked_function_arn if hasattr(context, "invoked_function_arn") else None
+    nested_event = adapter.loadNestedEvent(full_event, { "invoked_function_arn": arn })
     message_config = nested_event.get('messageConfig', {})
 
     try:
