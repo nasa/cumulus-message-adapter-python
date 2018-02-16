@@ -3,6 +3,8 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+import imp
+
 
 here = path.abspath(path.dirname(__file__))
 
@@ -16,6 +18,8 @@ dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' in
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+__version__ = imp.load_source('version', 'version.py').__version__
+
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
 
@@ -24,7 +28,7 @@ setup(
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
-    version='1.0.0',  # Required
+    version=__version__,  # Required
 
     # This is a one-line description or tagline of what your project does. This
     # corresponds to the "Summary" metadata field:
