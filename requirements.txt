@@ -1,2 +1,1 @@
 git+git://github.com/cumulus-nasa/cumulus-message-adapter.git#egg=cumulus-message-adapter
-jsonschema>=2.6.0
