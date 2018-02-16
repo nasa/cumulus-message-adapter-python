@@ -6,6 +6,12 @@ from os import path
 
 here = path.abspath(path.dirname(__file__))
 
+# get the dependencies and installs
+with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
+    all_reqs = f.read().split('\n')
+install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
+dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' in x]
+
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
@@ -40,5 +46,6 @@ setup(
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),
     py_modules=['run_cumulus_task', 'cumulus_logger'],
-    install_requires=['cumulus-message-adapter'],
+    install_requires=install_requires,
+    dependency_links=dependency_links
 )
