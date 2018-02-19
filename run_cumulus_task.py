@@ -55,7 +55,7 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
         task_response = task_function(nested_event, context)
     except Exception as exception:
         name = exception.args[0]
-        if ('WorkflowError' in name):                
+        if isinstance(name, str) and 'WorkflowError' in name:                
             cumulus_message['payload'] = None
             cumulus_message['exception'] = name
             logger.log({ "message": "WorkflowError", "level": "error" })
