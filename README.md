@@ -27,7 +27,7 @@ $ pip install git+https://github.com/cumulus-nasa/cumulus-message-adapter-python
 In order to use the Cumulus Message Adapter, you will need to create two
 methods in your task module: a handler function and a business logic function.
 
-The handler function is a standard Lambda handler function which takes three
+The handler function is a standard Lambda handler function which takes two
 parameters (as specified by AWS): `event` and `context`.
 
 The business logic function is where the actual work of your task occurs. It
@@ -97,7 +97,7 @@ PythonExample:
   handler: task.handler
   timeout: 300
   source: './example'
-  useSled: true
+  useMessageAdapter: true
   runtime: python2.7
   memory: 256
 ```
