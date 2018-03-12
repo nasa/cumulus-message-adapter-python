@@ -100,7 +100,6 @@ jobs:
       - run:
           name: Deploy to PyPi
           command: |
-            pip install --user virtualenv
             ~/.local/bin/virtualenv ~/venv36
             . ~/venv36/bin/activate
             pip install twine
@@ -115,7 +114,8 @@ workflows:
   build_publish_test_36:
     jobs:
       - build_python36
-      - publish_pypi:
-          filters:
-            branches:
-              only: master
+      - publish_pypi
+      # :
+      #     filters:
+      #       branches:
+      #         only: master
