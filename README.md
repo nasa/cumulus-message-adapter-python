@@ -1,6 +1,8 @@
 # cumulus-message-adapter-python
 
 [![CircleCI](https://circleci.com/gh/nasa/cumulus-message-adapter-python.svg?style=svg)](https://circleci.com/gh/nasa/cumulus-message-adapter-python)
+[![PyPI version](https://badge.fury.io/py/cumulus-message-adapter-python.svg)](https://badge.fury.io/py/cumulus-message-adapter-python)
+
 
 ## What is Cumulus?
 
