@@ -12,6 +12,7 @@ class CumulusLogger:
     def setMetadata(self, event, context):
         self.event = event
         self.function_name = context.function_name if hasattr(context, 'function_name') else 'unknown'
+        self.function_version = context.function_version if hasattr(context, 'function_version') else 'unknown'
 
     def createMessage(self, message):
         if type(message) is str:
@@ -25,6 +26,7 @@ class CumulusLogger:
         message["executions"] = [self.event["cumulus_meta"]["execution_name"]]
         message["timestamp"] = datetime.now().isoformat()
         message["sender"] = self.function_name
+        message["version"] = self.function_version
         return message
 
     def log(self, message):
