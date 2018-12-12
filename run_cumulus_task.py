@@ -21,12 +21,13 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
     Arguments:
         task_function -- Required. The function containing the business logic of the cumulus task
         cumulus_message -- Required. Either a full Cumulus Message or a Cumulus Remote Message
-        context -- AWS Lambda context dict
+        context -- AWS Lambda context object
         schemas -- Optional. A dict with filepaths of `input`, `config`, and `output` schemas that are relative to the task root directory. 
             All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`,
             and if not found there, will be ignored.
     """
 
+    context_dict = vars(context)
     logger = CumulusLogger()
     logger.setMetadata(cumulus_message, context)
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
@@ -36,7 +37,7 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
             return task_function(cumulus_message, context)
         except Exception as exception:
             name = exception.args[0]
-            if isinstance(name, str) and 'WorkflowError' in name:                
+            if isinstance(name, str) and 'WorkflowError' in name:
                 cumulus_message['payload'] = None
                 cumulus_message['exception'] = name
                 logger.log({ "message": "WorkflowError", "level": "error" })
@@ -46,16 +47,15 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
                 raise
 
     adapter = message_adapter(schemas)
-    full_event = adapter.loadAndUpdateRemoteEvent(cumulus_message, context)
-    arn = context.invoked_function_arn if hasattr(context, "invoked_function_arn") else None
-    nested_event = adapter.loadNestedEvent(full_event, { "invoked_function_arn": arn })
+    full_event = adapter.loadAndUpdateRemoteEvent(cumulus_message, context_dict)
+    nested_event = adapter.loadNestedEvent(full_event, context_dict)
     message_config = nested_event.get('messageConfig', {})
 
     try:
         task_response = task_function(nested_event, context)
     except Exception as exception:
         name = exception.args[0]
-        if isinstance(name, str) and 'WorkflowError' in name:                
+        if isinstance(name, str) and 'WorkflowError' in name:
             cumulus_message['payload'] = None
             cumulus_message['exception'] = name
             logger.log({ "message": "WorkflowError", "level": "error" })

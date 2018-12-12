@@ -15,6 +15,9 @@
     "createdAt": 1517326755526
   },
   "meta": {
+    "workflow_tasks": {
+      "ExampleTask": ""
+    },
     "distribution_endpoint": "https://g928e05in1.execute-api.us-east-1.amazonaws.com/dev/",
     "topic_arn": "arn:aws:sns:us-east-1:433612427488:lpdaac-cumulus-sftrackerSns-GIMUQEBE00QB",
     "queues": {
