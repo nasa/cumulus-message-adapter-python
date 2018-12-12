@@ -1,4 +1,5 @@
-from os import path, environ
+from os import path
+
 
 def create_event ():
     return {
@@ -18,6 +19,7 @@ def create_event ():
       "payload": { "anykey": "anyvalue" }
     }
 
+
 def create_handler_config():
     return {
         "task": {
@@ -30,9 +32,7 @@ def create_handler_config():
         }
     }
 
+
 class LambdaContextMock:
     def __init__(self):
         self.function_name = "function_name_example"
-
-    def __getitem__(self, item):
-        return getattr(self, item)
