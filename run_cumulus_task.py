@@ -13,7 +13,13 @@ if os.path.isfile('cumulus-message-adapter.zip'):
 
 from message_adapter.message_adapter import message_adapter
 
-def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
+
+def run_cumulus_task(
+    task_function,
+    cumulus_message,
+    context=None,
+    schemas=None
+):
     """
     Interprets incoming messages, passes them to an inner handler, gets the response
     and transforms it into an outgoing message, returned by Lambda.
@@ -27,7 +33,7 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
             and if not found there, will be ignored.
     """
 
-    context_dict = vars(context)
+    context_dict = vars(context) if context else None
     logger = CumulusLogger()
     logger.setMetadata(cumulus_message, context)
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
@@ -40,10 +46,10 @@ def run_cumulus_task(task_function, cumulus_message, context, schemas=None):
             if isinstance(name, str) and 'WorkflowError' in name:
                 cumulus_message['payload'] = None
                 cumulus_message['exception'] = name
-                logger.log({ "message": "WorkflowError", "level": "error" })
+                logger.log({ 'message': 'WorkflowError', 'level': 'error' })
                 return cumulus_message
             else:
-                logger.log({ "message": str(exception), "level": "error" })
+                logger.log({ 'message': str(exception), 'level': 'error' })
                 raise
 
     adapter = message_adapter(schemas)
