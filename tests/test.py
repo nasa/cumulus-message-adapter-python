@@ -1,5 +1,5 @@
 import unittest
-from helpers import LambdaContextMock, create_event, create_handler_config
+from helpers import LambdaContextMock, create_event
 
 from run_cumulus_task import run_cumulus_task
 
@@ -8,7 +8,6 @@ class TestSledHandler(unittest.TestCase):
     def test_simple_handler(self):
         def handler_fn(event, context):
             return event
-        create_handler_config()
         test_event = create_event()
         context = LambdaContextMock()
         response = run_cumulus_task(handler_fn, test_event, context)
@@ -20,7 +19,6 @@ class TestSledHandler(unittest.TestCase):
     def test_workflow_error(self):
         def workflow_error_fn(event, context):
             raise Exception('SomeWorkflowError')
-        create_handler_config()
         test_event = create_event()
         context = LambdaContextMock()
         response = run_cumulus_task(workflow_error_fn, test_event, context)
@@ -30,7 +28,6 @@ class TestSledHandler(unittest.TestCase):
     def test_other_error(self):
         def other_error_fn(event, context):
             raise Exception('SomeError')
-        create_handler_config()
         test_event = create_event()
         context = LambdaContextMock()
         try:
@@ -42,7 +39,6 @@ class TestSledHandler(unittest.TestCase):
     def test_simple_handler_without_context(self):
         def handler_fn(event, context):
             return event
-        create_handler_config()
         test_event = create_event()
         response = run_cumulus_task(handler_fn, test_event)
         self.assertTrue(response)
