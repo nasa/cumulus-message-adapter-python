@@ -33,7 +33,7 @@ def run_cumulus_task(
             and if not found there, will be ignored.
     """
 
-    context_dict = vars(context) if context else None
+    context_dict = vars(context) if context else {}
     logger = CumulusLogger()
     logger.setMetadata(cumulus_message, context)
     message_adapter_disabled = os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
