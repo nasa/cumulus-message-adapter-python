@@ -39,7 +39,7 @@ class TestSledHandler(unittest.TestCase):
             name = exception.args[0]
             self.assertTrue(name is 'SomeError')
 
-    def run_cumulus_task_without_context(self):
+    def test_run_cumulus_task_without_context(self):
         def handler_fn(event, context):
             return event
         create_handler_config()
