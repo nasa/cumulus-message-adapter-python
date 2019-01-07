@@ -44,3 +44,15 @@ class TestSledHandler(unittest.TestCase):
         self.assertTrue(response)
         self.assertTrue(response['cumulus_meta']['task'] == 'Example')
         self.assertTrue(response['payload']['input']['anykey'] == 'anyvalue')
+    
+    def test_task_function_with_additional_arguments(self):
+        taskargs = {"taskArgOne": "one", "taskArgTwo": "two"}
+        def handler_fn(event, context, taskArgOne, taskArgTwo):
+            self.assertTrue(taskArgOne == taskargs['taskArgOne'])
+            self.assertTrue(taskArgTwo == taskargs['taskArgTwo'])
+            return event
+        test_event = create_event()
+        response = run_cumulus_task(handler_fn, test_event, **taskargs)
+        self.assertTrue(response)
+        self.assertTrue(response['cumulus_meta']['task'] == 'Example')
+        self.assertTrue(response['payload']['input']['anykey'] == 'anyvalue')
