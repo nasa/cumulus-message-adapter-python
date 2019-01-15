@@ -142,8 +142,11 @@ logger.fatal('<your message>')
 ```
 
 **It can also take additional non-keyworded and keyworded arguments as in Python Logger.**
-***The `msg` is the message format string, the `args` and `kwargs` are the arguments for string formatting***
-***If `exc_info` in `kwargs` is not false, the exception information in the `exc_info` or `sys.exc_info()` is added to the message***
+
+The `msg` is the message format string, the `args` and `kwargs` are the arguments for string formatting.
+
+If `exc_info` in `kwargs` is not false, the exception information in the `exc_info` or `sys.exc_info()` is added to the message.
+
 ```
 logger.debug(msg, *args, **kwargs)
 ```
