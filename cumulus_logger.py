@@ -1,63 +1,87 @@
 import json
+import logging
 from datetime import datetime
+import sys
 
 class CumulusLogger:
-    """
-    Log messages with contextual info needed by Cumulus.
+    def __init__(self, name=__name__, level=logging.DEBUG):
+        """
+        Initialize the logger with an optional name and an optional level.
+        """
+        self.logger = logging.getLogger(name)
+        self.logger.setLevel(level)
 
-    Arguments:
-        cumulus_message -- required. either a full Cumulus Message or a Cumulus Remote Message
-        context -- an AWS Lambda context dict
-    """
+        console = logging.StreamHandler(sys.stdout)
+        console.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(message)s')
+        console.setFormatter(formatter)
+        self.logger.addHandler(console)
+
     def setMetadata(self, event, context):
+        """
+        Log messages with contextual info needed by Cumulus.
+
+        Arguments:
+            cumulus_message -- required. either a full Cumulus Message or a Cumulus Remote Message
+            context -- an AWS Lambda context dict
+        """
         self.event = event
         self.function_name = context.function_name if hasattr(context, 'function_name') else 'unknown'
         self.function_version = context.function_version if hasattr(context, 'function_version') else 'unknown'
 
-    def createMessage(self, message):
+    def getExceptionMessage(self, **kwargs):
+        exceptionStr = ''
+        if kwargs.get('exc_info', False) != False:
+            exceptionInfo = kwargs['exc_info'] if isinstance(kwargs['exc_info'], tuple) else sys.exc_info()
+            exceptionStr = ' ' + logging.Formatter().formatException(exceptionInfo)
+        return exceptionStr
+
+    def createMessage(self, message, *args, **kwargs):
+        msg = {}
         if type(message) is str:
-            message = {
-                "message": message
-            }
+            msg["message"] = message.format(*args, **kwargs) + self.getExceptionMessage(**kwargs)
+        else:
+            msg = message
+
         try:
-            message["level"]
+            msg["level"]
         except KeyError:
-            message["level"] = "info"
-        message["executions"] = [self.event["cumulus_meta"]["execution_name"]]
-        message["timestamp"] = datetime.now().isoformat()
-        message["sender"] = self.function_name
-        message["version"] = self.function_version
-        return message
+            msg["level"] = "info"
+        msg["executions"] = [self.event["cumulus_meta"]["execution_name"]]
+        msg["timestamp"] = datetime.now().isoformat()
+        msg["sender"] = self.function_name
+        msg["version"] = self.function_version
+        return msg
 
-    def log(self, message):
-        print(json.dumps(self.createMessage(message)))
+    def log(self, message, *args, **kwargs):
+        self.logger.log(logging.INFO, json.dumps(self.createMessage(message, *args, **kwargs)))
 
-    def debug(self, message):
-        msg = self.createMessage(message)
+    def debug(self, message, *args, **kwargs):
+        msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "debug"
-        print(json.dumps(msg))
+        self.logger.debug(json.dumps(msg))
 
-    def info(self, message):
-        msg = self.createMessage(message)
+    def info(self, message, *args, **kwargs):
+        msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "info"
-        print(json.dumps(msg))
+        self.logger.info(json.dumps(msg))
 
-    def warn(self, message):
-        msg = self.createMessage(message)
+    def warn(self, message, *args, **kwargs):
+        msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "warn"
-        print(json.dumps(msg))
+        self.logger.warning(json.dumps(msg))
 
-    def error(self, message):
-        msg = self.createMessage(message)
+    def error(self, message, *args, **kwargs):
+        msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "error"
-        print(json.dumps(msg))
+        self.logger.error(json.dumps(msg))
 
-    def fatal(self, message):
-        msg = self.createMessage(message)
+    def fatal(self, message, *args, **kwargs):
+        msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "fatal"
-        print(json.dumps(msg))
+        self.logger.error(json.dumps(msg))
 
-    def trace(self, message):
-        msg = self.createMessage(message)
+    def trace(self, message, *args, **kwargs):
+        msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "trace"
-        print(json.dumps(msg))
+        self.logger.critical(json.dumps(msg))

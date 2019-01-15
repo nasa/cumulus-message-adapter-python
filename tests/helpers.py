@@ -36,3 +36,5 @@ def create_handler_config():
 class LambdaContextMock:
     def __init__(self):
         self.function_name = "function_name_example"
+        self.function_version = 1
+        self.invoked_function_arn = "arn:aws:lambda:us-east-1:123:function:function_name_example:1"
