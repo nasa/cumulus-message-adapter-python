@@ -16,6 +16,10 @@ def task(event, context):
     """simple task that returns the event unchanged"""
     # example logging inside of a task using CumulusLogger
     logger.info('task executed')
+
+    # log error when an exception is caught
+    logger.error("task formatted message {} exc_info ", "bar", exc_info=True)
+
     # return the output of the task
     return { "goodbye": event["input"]["hello"] }
 

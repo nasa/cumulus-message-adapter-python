@@ -36,10 +36,10 @@ class TestLogger(unittest.TestCase):
             self.assertTrue(msg["message"].find("ZeroDivisionError") == -1)
             logger.error("test exc_info", exc_info=False)
 
-            msg = logger.createMessage("test exc_info", exc_info=True)
-            self.assertTrue(msg["message"].find("test exc_info") == 0)
+            msg = logger.createMessage("test formatted {} exc_info ", "bar", exc_info=True)
+            self.assertTrue(msg["message"].find("test formatted bar exc_info") == 0)
             self.assertTrue(msg["message"].find("ZeroDivisionError") > 0)
-            logger.error("test exc_info", exc_info=True)
+            logger.error("test formatted {} exc_info ", "bar", exc_info=True)
 
             msg = logger.createMessage("test exc_info", exc_info=sys.exc_info())
             self.assertTrue(msg["message"].find("test exc_info") == 0)
