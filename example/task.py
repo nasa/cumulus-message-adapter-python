@@ -13,7 +13,7 @@ schemas = {
 }
 
 def task(event, context):
-    """simple task that returns the event unchanged"""
+    """simple task that returns the updated event"""
     # example logging inside of a task using CumulusLogger
     logger.info('task executed')
 

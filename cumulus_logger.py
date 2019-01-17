@@ -11,11 +11,15 @@ class CumulusLogger:
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
 
-        console = logging.StreamHandler(sys.stdout)
-        console.setLevel(logging.DEBUG)
+        # avoid duplicate message in AWS cloudwatch
+        self.logger.propagate = False
+
+        logHandler = logging.StreamHandler()
+        logHandler.setLevel(logging.DEBUG)
         formatter = logging.Formatter('%(message)s')
-        console.setFormatter(formatter)
-        self.logger.addHandler(console)
+        logHandler.setFormatter(formatter)
+        self.logger.handlers = []
+        self.logger.addHandler(logHandler)
 
     def setMetadata(self, event, context):
         """
@@ -29,7 +33,7 @@ class CumulusLogger:
         self.function_name = context.function_name if hasattr(context, 'function_name') else 'unknown'
         self.function_version = context.function_version if hasattr(context, 'function_version') else 'unknown'
 
-    def getExceptionMessage(self, **kwargs):
+    def __getExceptionMessage(self, **kwargs):
         exceptionStr = ''
         if kwargs.get('exc_info', False) != False:
             exceptionInfo = kwargs['exc_info'] if isinstance(kwargs['exc_info'], tuple) else sys.exc_info()
@@ -39,7 +43,7 @@ class CumulusLogger:
     def createMessage(self, message, *args, **kwargs):
         msg = {}
         if type(message) is str:
-            msg["message"] = message.format(*args, **kwargs) + self.getExceptionMessage(**kwargs)
+            msg["message"] = message.format(*args, **kwargs) + self.__getExceptionMessage(**kwargs)
         else:
             msg = message
 
@@ -70,6 +74,9 @@ class CumulusLogger:
         msg = self.createMessage(message, *args, **kwargs)
         msg["level"] = "warn"
         self.logger.warning(json.dumps(msg))
+
+    def warning(self, message, *args, **kwargs):
+        self.warn(message, *args, **kwargs)
 
     def error(self, message, *args, **kwargs):
         msg = self.createMessage(message, *args, **kwargs)

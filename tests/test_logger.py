@@ -1,3 +1,4 @@
+import logging
 import sys
 from cumulus_logger import CumulusLogger
 import unittest
@@ -39,7 +40,7 @@ class TestLogger(unittest.TestCase):
             msg = logger.createMessage("test formatted {} exc_info ", "bar", exc_info=True)
             self.assertTrue(msg["message"].find("test formatted bar exc_info") == 0)
             self.assertTrue(msg["message"].find("ZeroDivisionError") > 0)
-            logger.error("test formatted {} exc_info ", "bar", exc_info=True)
+            logger.warn("test formatted {} exc_info ", "bar", exc_info=True)
 
             msg = logger.createMessage("test exc_info", exc_info=sys.exc_info())
             self.assertTrue(msg["message"].find("test exc_info") == 0)
@@ -51,3 +52,11 @@ class TestLogger(unittest.TestCase):
             self.assertTrue(msg["message"].find("ZeroDivisionError") > 0)
             logger.trace("test exc_info", exc_info=e)
 
+    def test_logger_name_loglevel(self):
+        event, context = create_event(), LambdaContextMock()
+        logger = CumulusLogger('logger_test', logging.INFO)
+        logger.setMetadata(event, context)
+        self.assertTrue(logger.logger.getEffectiveLevel() == logging.INFO)
+        logger.debug("test loggging level debug")
+        logger.info("test loggging level info")
+        logger.warning("test loggging level warning")

@@ -124,7 +124,7 @@ Included in this package is the `cumulus_logger` which contains a logging class 
 from cumulus_logger import CumulusLogger
 ```
 
-**Instantiate the logger inside the task definition:**
+**Instantiate the logger inside the task definition, name and level are optional:**
 
 ```python
 logger = CumulusLogger(event, context)
