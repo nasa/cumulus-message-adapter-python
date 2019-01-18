@@ -64,6 +64,7 @@ The Cumulus Message adapter for python provides one method:
     Message
   * `context` - the Lambda context
   * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be a string set to the filepath of the corresponding JSON schema file. All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`, and if not found there, will be ignored.
+  * `taskargs` - Optional. Additional keyword arguments for the `task_function`
 
 ## Example
 
@@ -123,7 +124,7 @@ Included in this package is the `cumulus_logger` which contains a logging class 
 from cumulus_logger import CumulusLogger
 ```
 
-**Instantiate the logger inside the task definition:**
+**Instantiate the logger inside the task definition, name and level are optional:**
 
 ```python
 logger = CumulusLogger(event, context)
@@ -140,6 +141,16 @@ logger.error('<your message>')
 logger.fatal('<your message>')
 ```
 
+**It can also take additional non-keyworded and keyworded arguments as in Python Logger.**
+
+The `msg` is the message format string, the `args` and `kwargs` are the arguments for string formatting.
+
+If `exc_info` in `kwargs` is not false, the exception information in the `exc_info` or `sys.exc_info()` is added to the message.
+
+```
+logger.debug(msg, *args, **kwargs)
+```
+
 **Example usage:**
 
 ```python
@@ -154,6 +165,10 @@ logger = CumulusLogger()
 
 def task(event, context):
     logger.info('task executed')
+
+    # log error when an exception is caught
+    logger.error("task formatted message {} exc_info ", "bar", exc_info=True)
+
     # return the output of the task
     return { "example": "output" }
 

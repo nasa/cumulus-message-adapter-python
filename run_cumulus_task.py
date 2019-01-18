@@ -18,7 +18,8 @@ def run_cumulus_task(
     task_function,
     cumulus_message,
     context=None,
-    schemas=None
+    schemas=None,
+    **taskargs
 ):
     """
     Interprets incoming messages, passes them to an inner handler, gets the response
@@ -31,6 +32,7 @@ def run_cumulus_task(
         schemas -- Optional. A dict with filepaths of `input`, `config`, and `output` schemas that are relative to the task root directory. 
             All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`,
             and if not found there, will be ignored.
+        taskargs -- Optional. Additional keyword arguments for the task_function
     """
 
     context_dict = vars(context) if context else {}
@@ -40,7 +42,7 @@ def run_cumulus_task(
 
     if message_adapter_disabled is 'true':
         try:
-            return task_function(cumulus_message, context)
+            return task_function(cumulus_message, context, **taskargs)
         except Exception as exception:
             name = exception.args[0]
             if isinstance(name, str) and 'WorkflowError' in name:
@@ -58,7 +60,7 @@ def run_cumulus_task(
     message_config = nested_event.get('messageConfig', {})
 
     try:
-        task_response = task_function(nested_event, context)
+        task_response = task_function(nested_event, context, **taskargs)
     except Exception as exception:
         name = exception.args[0]
         if isinstance(name, str) and 'WorkflowError' in name:
