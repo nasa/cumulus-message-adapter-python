@@ -61,7 +61,16 @@ The Cumulus Message adapter for python provides one method:
   * `task_function` - the function containing your business logic (as described
     above)
   * `cumulus_message` - the event passed by Lambda, and should be a Cumulus
-    Message
+    Message, or a CMA parameter encapsulated message: 
+    
+```json
+{
+  'cma': {
+    'event': '<cumulus message object>
+    'SomeCMAConfigKey': '<CMA configuration object>
+  }
+}
+```
   * `context` - the Lambda context
   * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be a string set to the filepath of the corresponding JSON schema file. All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`, and if not found there, will be ignored.
   * `taskargs` - Optional. Additional keyword arguments for the `task_function`

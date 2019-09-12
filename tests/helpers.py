@@ -1,5 +1,27 @@
 from os import path
 
+def create_parameter_event ():
+    return {
+        "cma": {
+            "event": {
+                "workflow_config": {
+                    "Example": {
+                        "foo": "wut",
+                        "cumulus_message": {}
+                    }
+                },
+                "cumulus_meta": {
+                    "task": "Example",
+                    "message_source": "local",
+                    "id": "id-1234",
+                    "execution_name": "123123"
+                },
+                "meta": { "foo": "bar" },
+                "payload": { "anykey": "anyvalue" }
+            }
+        }
+    }
+
 
 def create_event ():
     return {

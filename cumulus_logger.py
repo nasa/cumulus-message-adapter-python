@@ -39,6 +39,11 @@ class CumulusLogger:
             exceptionInfo = kwargs['exc_info'] if isinstance(kwargs['exc_info'], tuple) else sys.exc_info()
             exceptionStr = ' ' + logging.Formatter().formatException(exceptionInfo)
         return exceptionStr
+    
+    def __getEvent(self, event):
+        if event.get('cma'):
+            return event['cma']['event']['cumulus_meta']['execution_name']
+        return event['cumulus_meta']['execution_name']
 
     def createMessage(self, message, *args, **kwargs):
         msg = {}
@@ -46,12 +51,12 @@ class CumulusLogger:
             msg["message"] = message.format(*args, **kwargs) + self.__getExceptionMessage(**kwargs)
         else:
             msg = message
-
         try:
             msg["level"]
         except KeyError:
             msg["level"] = "info"
-        msg["executions"] = [self.event["cumulus_meta"]["execution_name"]]
+            
+        msg["executions"] = [self.__getEvent(self.event)]
         msg["timestamp"] = datetime.now().isoformat()
         msg["sender"] = self.function_name
         msg["version"] = self.function_version
