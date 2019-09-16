@@ -40,7 +40,7 @@ class CumulusLogger:
             exceptionStr = ' ' + logging.Formatter().formatException(exceptionInfo)
         return exceptionStr
     
-    def __getEvent(self, event):
+    def __getExecutionName(self, event):
         if event.get('cma'):
             return event['cma']['event']['cumulus_meta']['execution_name']
         return event['cumulus_meta']['execution_name']
@@ -56,7 +56,7 @@ class CumulusLogger:
         except KeyError:
             msg["level"] = "info"
             
-        msg["executions"] = [self.__getEvent(self.event)]
+        msg["executions"] = [self.__getExecutionName(self.event)]
         msg["timestamp"] = datetime.now().isoformat()
         msg["sender"] = self.function_name
         msg["version"] = self.function_version
