@@ -2,7 +2,7 @@ import logging
 import sys
 from cumulus_logger import CumulusLogger
 import unittest
-from helpers import LambdaContextMock, create_event
+from helpers import LambdaContextMock, create_event, create_parameter_event
 
 class TestLogger(unittest.TestCase):
 
@@ -16,6 +16,17 @@ class TestLogger(unittest.TestCase):
         self.assertTrue(msg["executions"] == [event["cumulus_meta"]["execution_name"]])
         self.assertTrue(msg["message"] == "test simple")
         logger.info("test simple")
+
+    def test_parameter_configured_message(self):
+        event, context = create_parameter_event(), LambdaContextMock()
+        logger = CumulusLogger()
+        logger.setMetadata(event, context)
+        msg = logger.createMessage("test parameter event")
+        self.assertTrue(msg["sender"] == context.function_name)
+        self.assertTrue(msg["version"] == context.function_version)
+        self.assertTrue(msg["executions"] == [event["cma"]["event"]["cumulus_meta"]["execution_name"]])
+        self.assertTrue(msg["message"] == "test parameter event")
+        logger.info("test parameter configured message")
 
     def test_formatted_message(self):
         event, context = create_event(), LambdaContextMock()
