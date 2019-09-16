@@ -65,9 +65,9 @@ The Cumulus Message adapter for python provides one method:
     
 ```json
 {
-  'cma': {
-    'event': '<cumulus message object>
-    'SomeCMAConfigKey': '<CMA configuration object>
+  "cma": {
+    "event": "<cumulus message object>"
+    "SomeCMAConfigKey": "CMA configuration object>"
   }
 }
 ```
