@@ -35,6 +35,7 @@ setup(
     # https://packaging.python.org/specifications/core-metadata/#summary
     description='A handler library for cumulus tasks written in python',  # Required
     long_description=long_description,  # Optional
+    long_description_content_type='text/markdown',
     url='https://github.com/cumulus-nasa/cumulus-message-adapter-python',  # Optional
     author='Cumulus Authors',  # Optional
     author_email='info@developmentseed.org',  # Optional
