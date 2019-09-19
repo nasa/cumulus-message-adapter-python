@@ -21,7 +21,7 @@ to be sent to the next task.
 ## Installation
 
 ```
-$ pip install git+https://github.com/cumulus-nasa/cumulus-message-adapter-python.git
+$ pip install cumulus-message-adapter-python
 ```
 
 ## Task definition
@@ -61,8 +61,8 @@ The Cumulus Message adapter for python provides one method:
   * `task_function` - the function containing your business logic (as described
     above)
   * `cumulus_message` - the event passed by Lambda, and should be a Cumulus
-    Message, or a CMA parameter encapsulated message: 
-    
+    Message, *or* a CMA parameter encapsulated message (see [Cumulus Workflow Documentation](https://nasa.github.io/cumulus/docs/workflows/input_output)):
+
 ```json
 {
   "cma": {
@@ -100,19 +100,7 @@ creating release packages is available [here](https://docs.aws.amazon.com/lambda
 
 ## Usage in a Cumulus Deployment
 
-During deployment, Cumulus will automatically obtain and inject the [Cumulus Message Adapter](https://github.com/cumulus-nasa/cumulus-message-adapter) into the compiled code and create a zip file to be deployed to Lambda.
-
-The example task in the [example folder](./example) of this repository would be configured in lambdas.yml as follows:
-
-```yaml
-PythonExample:
-  handler: task.handler
-  timeout: 300
-  source: './example'
-  useMessageAdapter: true
-  runtime: python2.7
-  memory: 256
-```
+For documenation on how to utilize this package in a Cumulus Deployment, view the [Cumulus Workflow Documenation](https://nasa.github.io/cumulus/docs/workflows/input_output).
 
 ## Development
 
@@ -125,7 +113,7 @@ $ pip install -r requirements.txt
 
 ### Logging with `CumulusLogger`
 
-Included in this package is the `cumulus_logger` which contains a logging class `CumulusLogger` that standardizes the log format for Cumulus. Methods are provided to log error, fatal, warning, debug, info, and trace. 
+Included in this package is the `cumulus_logger` which contains a logging class `CumulusLogger` that standardizes the log format for Cumulus. Methods are provided to log error, fatal, warning, debug, info, and trace.
 
 **Import the `CumulusLogger` class:**
 
