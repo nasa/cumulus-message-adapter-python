@@ -7,18 +7,16 @@ import sys
 
 from cumulus_logger import CumulusLogger
 
-
-
 def set_sys_path():
-    # if the message adapter zip file has been included, put it in the path
-    # it'll be used instead of the version from the requirements file
-    if os.path.isfile('cumulus-message-adapter.zip'):
-        sys.path.insert(0, 'cumulus-message-adapter.zip')
-
     # If the lambda has CUMULUS_MESSAGE_ADAPTER_DIR set, use the CMA lib
     # present at that location
     if os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'):
         sys.path.insert(0, os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'))
+
+    # if the message adapter zip file has been included, put it in the path
+    # it'll be used instead of the version from the requirements file
+    if os.path.isfile('cumulus-message-adapter.zip'):
+        sys.path.insert(0, 'cumulus-message-adapter.zip')
 
 def run_cumulus_task(
     task_function,
