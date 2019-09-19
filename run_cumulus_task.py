@@ -6,17 +6,19 @@ import os
 import sys
 
 from cumulus_logger import CumulusLogger
-# if the message adapter zip file has been included, put it in the path
-# it'll be used instead of the version from the requirements file
-if os.path.isfile('cumulus-message-adapter.zip'):
-    sys.path.insert(0, 'cumulus-message-adapter.zip')
 
-# If the lambda has CUMULUS_MESSAGE_ADAPTER_DIR set, use the CMA lib
-# present at that location
-if os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'):
-    sys.path.insert(0, os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'))
 
-from message_adapter.message_adapter import message_adapter
+
+def set_sys_path():
+    # if the message adapter zip file has been included, put it in the path
+    # it'll be used instead of the version from the requirements file
+    if os.path.isfile('cumulus-message-adapter.zip'):
+        sys.path.insert(0, 'cumulus-message-adapter.zip')
+
+    # If the lambda has CUMULUS_MESSAGE_ADAPTER_DIR set, use the CMA lib
+    # present at that location
+    if os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'):
+        sys.path.insert(0, os.environ.get('CUMULUS_MESSAGE_ADAPTER_DIR'))
 
 def run_cumulus_task(
     task_function,
@@ -33,11 +35,14 @@ def run_cumulus_task(
         task_function -- Required. The function containing the business logic of the cumulus task
         cumulus_message -- Required. Either a full Cumulus Message or a Cumulus Remote Message
         context -- AWS Lambda context object
-        schemas -- Optional. A dict with filepaths of `input`, `config`, and `output` schemas that are relative to the task root directory. 
+        schemas -- Optional. A dict with filepaths of `input`, `config`, and `output` schemas that are relative to the task root directory.
             All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`,
             and if not found there, will be ignored.
         taskargs -- Optional. Additional keyword arguments for the task_function
     """
+
+    set_sys_path()
+    from message_adapter.message_adapter import message_adapter
 
     context_dict = vars(context) if context else {}
     logger = CumulusLogger()
