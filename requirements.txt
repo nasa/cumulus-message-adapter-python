@@ -1,1 +1,1 @@
-cumulus-message-adapter~=1.0.6
+cumulus-message-adapter~=1.1.1
