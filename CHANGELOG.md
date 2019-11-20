@@ -23,4 +23,5 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ### Added
 
-- Updated CMA client to handle parameterized configuration, set execution env variable regardless of message format
+- Updated CMA client to handle parameterized configuration, set execution env
+  variable regardless of message format
