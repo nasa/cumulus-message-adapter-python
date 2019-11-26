@@ -58,9 +58,9 @@ https://help.github.com/articles/setting-guidelines-for-repository-contributors/
 Guidelines] and the [Cumulus Wiki]**
 
 [search open issues]:
-  https://github.com/cumulus-nasa/cumulus-message-adapter-python/issues
+  https://github.com/nasa/cumulus-message-adapter-python/issues
 [create a new issue]:
-  https://github.com/cumulus-nasa/cumulus-message-adapter-python/issues/new
+  https://github.com/nasa/cumulus-message-adapter-python/issues/new
 [create a pull request]:
   https://help.github.com/articles/creating-a-pull-request/
 [mention the corresponding issue number]:

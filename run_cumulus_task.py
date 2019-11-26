@@ -51,10 +51,11 @@ def run_cumulus_task(
     context_dict = vars(context) if context else {}
     logger = CumulusLogger()
     logger.setMetadata(cumulus_message, context)
-    message_adapter_disabled = os.environ.get(
-        'CUMULUS_MESSAGE_ADAPTER_DISABLED')
+    message_adapter_disabled = str(
+        os.environ.get('CUMULUS_MESSAGE_ADAPTER_DISABLED')
+    ).lower()
 
-    if message_adapter_disabled is 'true':
+    if message_adapter_disabled == 'true':
         try:
             return task_function(cumulus_message, context, **taskargs)
         except Exception as exception:
@@ -62,15 +63,13 @@ def run_cumulus_task(
             if isinstance(name, str) and 'WorkflowError' in name:
                 cumulus_message['payload'] = None
                 cumulus_message['exception'] = name
-                logger.log({'message': 'WorkflowError', 'level': 'error'})
+                logger.error('WorkflowError')
                 return cumulus_message
-            else:
-                logger.log({'message': str(exception), 'level': 'error'})
-                raise
+            logger.error(exception)
+            raise
 
     adapter = message_adapter(schemas)
-    full_event = adapter.loadAndUpdateRemoteEvent(
-        cumulus_message, context_dict)
+    full_event = adapter.loadAndUpdateRemoteEvent(cumulus_message, context_dict)
     nested_event = adapter.loadNestedEvent(full_event, context_dict)
     message_config = nested_event.get('messageConfig', {})
 
@@ -81,10 +80,9 @@ def run_cumulus_task(
         if isinstance(name, str) and 'WorkflowError' in name:
             cumulus_message['payload'] = None
             cumulus_message['exception'] = name
-            logger.log({"message": "WorkflowError", "level": "error"})
+            logger.error('WorkflowError')
             return cumulus_message
-        else:
-            logger.log({"message": str(exception), "level": "error"})
-            raise
+        logger.error(exception)
+        raise
 
     return adapter.createNextEvent(task_response, full_event, message_config)

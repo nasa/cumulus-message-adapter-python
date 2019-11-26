@@ -201,7 +201,7 @@ $ SERVICES=s3 localstack start
 And then you can check tests pass with the following nosetests command:
 
 ```plain
-$ CUMULUS_ENV=testing nosetests -v -s
+$ CUMULUS_ENV=testing nosetests -v -s --with-doctest
 ```
 
 ### Linting
@@ -236,7 +236,7 @@ This approach has a few major advantages:
 [pypi version]:
   https://badge.fury.io/py/cumulus-message-adapter-python.svg
 [Cumulus Documentation]:
-  https://cumulus-nasa.github.io/
+  https://nasa.github.io/cumulus/
 [creating release packages]:
   https://docs.aws.amazon.com/lambda/latest/dg/deployment-package-v2.html
 [cumulus workflow documenation]:

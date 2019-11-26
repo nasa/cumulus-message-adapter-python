@@ -1,3 +1,4 @@
+import json
 import logging
 import sys
 import unittest
@@ -13,8 +14,20 @@ class TestLogger(unittest.TestCase):
         msg = logger.createMessage("test simple")
         self.assertEqual(msg["sender"], context.function_name)
         self.assertEqual(msg["version"], context.function_version)
-        self.assertEqual(msg["executions"],
-                         [event["cumulus_meta"]["execution_name"]])
+        self.assertEqual(
+            msg["executions"],
+            event["cumulus_meta"]["execution_name"])
+        self.assertEqual(
+            msg["asyncOperationId"],
+            event["cumulus_meta"]["asyncOperationId"])
+        self.assertEqual(
+            msg["granules"],
+            json.dumps([granule["granuleId"]
+                        for granule in event["meta"]["input_granules"]]))
+        self.assertEqual(
+            msg["parentArn"],
+            event["cumulus_meta"]["parentExecutionArn"])
+        self.assertEqual(msg["stackName"], event["meta"]["stack"])
         self.assertEqual(msg["message"], "test simple")
         logger.info("test simple")
 
@@ -26,10 +39,31 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(msg["sender"], context.function_name)
         self.assertEqual(msg["version"], context.function_version)
         self.assertEqual(
-            msg["executions"], [
-                event["cma"]["event"]["cumulus_meta"]["execution_name"]])
+            msg["executions"],
+            event["cma"]["event"]["cumulus_meta"]["execution_name"])
+        self.assertEqual(
+            msg["asyncOperationId"],
+            event["cma"]["event"]["cumulus_meta"]["asyncOperationId"])
+        self.assertEqual(
+            msg["granules"],
+            json.dumps([granule["granuleId"]
+                        for granule in event["cma"]["event"]["payload"]["granules"]]))
+        self.assertEqual(
+            msg["parentArn"],
+            event["cma"]["event"]["cumulus_meta"]["parentExecutionArn"])
+        self.assertEqual(
+            msg["stackName"],
+            event["cma"]["event"]["meta"]["stack"])
         self.assertEqual(msg["message"], "test parameter event")
         logger.info("test parameter configured message")
+
+    def test_empty_event_and_context(self):
+        event, context = {}, {}
+        logger = CumulusLogger()
+        logger.setMetadata(event, context)
+        msg = logger.createMessage("empty event and context")
+        self.assertEqual(set(msg.keys()),
+                         {"version", "sender", "message", "timestamp"})
 
     def test_formatted_message(self):
         event, context = create_event(), LambdaContextMock()
@@ -73,6 +107,6 @@ class TestLogger(unittest.TestCase):
         logger = CumulusLogger('logger_test', logging.INFO)
         logger.setMetadata(event, context)
         self.assertTrue(logger.logger.getEffectiveLevel() == logging.INFO)
-        logger.debug("test loggging level debug")
-        logger.info("test loggging level info")
-        logger.warning("test loggging level warning")
+        logger.debug("test logging level debug")
+        logger.info("test logging level info")
+        logger.warning("test logging level warning")
