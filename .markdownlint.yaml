@@ -1,0 +1,9 @@
+---
+# Markdown Lint Rules Configuration
+# See https://github.com/DavidAnson/markdownlint/blob/master/doc/Rules.md
+
+commands-show-output: false
+line-length: true
+no-trailing-punctuation:
+  punctuation: ".,;:!"
+single-trailing-newline: true

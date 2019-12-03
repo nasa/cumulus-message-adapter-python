@@ -1,15 +1,14 @@
 # cumulus-message-adapter-python
 
-[![CircleCI](https://circleci.com/gh/nasa/cumulus-message-adapter-python.svg?style=svg)](https://circleci.com/gh/nasa/cumulus-message-adapter-python)
-[![PyPI version](https://badge.fury.io/py/cumulus-message-adapter-python.svg)](https://badge.fury.io/py/cumulus-message-adapter-python)
-
+[![CircleCI]](https://circleci.com/gh/nasa/cumulus-message-adapter-python)
+[![PyPI version]](https://badge.fury.io/py/cumulus-message-adapter-python)
 
 ## What is Cumulus?
 
 Cumulus is a cloud-based data ingest, archive, distribution and management
 prototype for NASA's future Earth science data streams.
 
-Read the [Cumulus Documentation](https://cumulus-nasa.github.io/)
+Read the [Cumulus Documentation]
 
 ## What is the Cumulus Message Adapter?
 
@@ -20,8 +19,8 @@ to be sent to the next task.
 
 ## Installation
 
-```
-$ pip install cumulus-message-adapter-python
+```plain
+pip install cumulus-message-adapter-python
 ```
 
 ## Task definition
@@ -37,10 +36,9 @@ should take two parameters: `event` and `context`.
 
 The `event` object contains two keys:
 
-  * `input` - the task's input, typically the `payload` of the message,
-    produced at runtime
-  * `config` - the task's configuration, with any templated variables
-    resolved
+* `input` - the task's input, typically the `payload` of the message, produced
+  at runtime
+* `config` - the task's configuration, with any templated variables resolved
 
 The `context` parameter is the standard Lambda context as passed by AWS.
 
@@ -58,28 +56,35 @@ must be communicated to those using the task.
 The Cumulus Message adapter for python provides one method:
 `run_cumulus_task`. It takes four parameters:
 
-  * `task_function` - the function containing your business logic (as described
-    above)
-  * `cumulus_message` - the event passed by Lambda, and should be a Cumulus
-    Message, *or* a CMA parameter encapsulated message (see [Cumulus Workflow Documentation](https://nasa.github.io/cumulus/docs/workflows/input_output)):
+* `task_function` - the function containing your business logic (as described
+  above)
+* `cumulus_message` - the event passed by Lambda, and should be a Cumulus
+  Message, *or* a CMA parameter encapsulated message (see [Cumulus Workflow
+  Documentation](https://nasa.github.io/cumulus/docs/workflows/input_output)):
 
-```json
-{
-  "cma": {
-    "event": "<cumulus message object>"
-    "SomeCMAConfigKey": "CMA configuration object>"
+  ```json
+  {
+     "cma": {
+        "event": "<cumulus message object>",
+        "SomeCMAConfigKey": "CMA configuration object>"
+     }
   }
-}
-```
-  * `context` - the Lambda context
-  * `schemas` - optional: a dict with `input`, `config`, and `output` properties. Each should be a string set to the filepath of the corresponding JSON schema file. All three properties of this dict are optional. If ommitted, the message adapter will look in `/<task_root>/schemas/<schema_type>.json`, and if not found there, will be ignored.
-  * `taskargs` - Optional. Additional keyword arguments for the `task_function`
+  ```
+
+* `context` - the Lambda context
+* `schemas` - optional: a dict with `input`, `config`, and `output` properties.
+  Each should be a string set to the filepath of the corresponding JSON schema
+  file. All three properties of this dict are optional. If ommitted, the message
+  adapter will look in `/<task_root>/schemas/<schema_type>.json`, and if not
+  found there, will be ignored.
+* `taskargs` - Optional. Additional keyword arguments for the `task_function`
 
 ## Example
 
-Simple example of using this package's `run_cumulus_task` function as a wrapper around another function:
+Simple example of using this package's `run_cumulus_task` function as a wrapper
+around another function:
 
-```py
+```python
 from run_cumulus_task import run_cumulus_task
 
 # simple task that returns the event
@@ -95,25 +100,28 @@ For a full example see the [example folder](./example).
 
 ## Creating a deployment package
 
-Tasks that use this library are just standard AWS Lambda tasks. Information on
-creating release packages is available [here](https://docs.aws.amazon.com/lambda/latest/dg/deployment-package-v2.html).
+Tasks that use this library are just standard AWS Lambda tasks. See
+[creating release packages].
 
 ## Usage in a Cumulus Deployment
 
-For documenation on how to utilize this package in a Cumulus Deployment, view the [Cumulus Workflow Documenation](https://nasa.github.io/cumulus/docs/workflows/input_output).
+For documenation on how to utilize this package in a Cumulus Deployment, view
+the [Cumulus Workflow Documenation].
 
 ## Development
 
 ### Dependency Installation
 
-```
+```plain
 $ pip install -r requirements-dev.txt
 $ pip install -r requirements.txt
 ```
 
 ### Logging with `CumulusLogger`
 
-Included in this package is the `cumulus_logger` which contains a logging class `CumulusLogger` that standardizes the log format for Cumulus. Methods are provided to log error, fatal, warning, debug, info, and trace.
+Included in this package is the `cumulus_logger` which contains a logging class
+`CumulusLogger` that standardizes the log format for Cumulus. Methods are
+provided to log error, fatal, warning, debug, info, and trace.
 
 **Import the `CumulusLogger` class:**
 
@@ -121,7 +129,8 @@ Included in this package is the `cumulus_logger` which contains a logging class 
 from cumulus_logger import CumulusLogger
 ```
 
-**Instantiate the logger inside the task definition, name and level are optional:**
+**Instantiate the logger inside the task definition (name and level are
+optional):**
 
 ```python
 logger = CumulusLogger(event, context)
@@ -138,13 +147,16 @@ logger.error('<your message>')
 logger.fatal('<your message>')
 ```
 
-**It can also take additional non-keyworded and keyworded arguments as in Python Logger.**
+**It can also take additional non-keyword and keyword arguments as in Python
+Logger.**
 
-The `msg` is the message format string, the `args` and `kwargs` are the arguments for string formatting.
+The `msg` is the message format string, the `args` and `kwargs` are the
+arguments for string formatting.
 
-If `exc_info` in `kwargs` is not false, the exception information in the `exc_info` or `sys.exc_info()` is added to the message.
+If `exc_info` in `kwargs` is not `False`, the exception information in the
+`exc_info` or `sys.exc_info()` is added to the message.
 
-```
+```python
 logger.debug(msg, *args, **kwargs)
 ```
 
@@ -179,21 +191,22 @@ def handler(event, context):
 
 Running tests requires [localstack](https://github.com/localstack/localstack).
 
-Tests only require localstack running S3, which can be initiated with the following command:
+Tests only require localstack running S3, which can be initiated with the
+following command:
 
-```
+```plain
 $ SERVICES=s3 localstack start
 ```
 
 And then you can check tests pass with the following nosetests command:
 
-```
-$ CUMULUS_ENV=testing nosetests -v -s
+```plain
+$ CUMULUS_ENV=testing nosetests -v -s --with-doctest
 ```
 
 ### Linting
 
-```
+```plain
 $ pylint run_cumulus_task.py
 ```
 
@@ -217,3 +230,14 @@ This approach has a few major advantages:
 ## License
 
 [Apache 2.0](LICENSE)
+
+[circleci]:
+  https://circleci.com/gh/nasa/cumulus-message-adapter-python.svg?style=svg
+[pypi version]:
+  https://badge.fury.io/py/cumulus-message-adapter-python.svg
+[Cumulus Documentation]:
+  https://nasa.github.io/cumulus/
+[creating release packages]:
+  https://docs.aws.amazon.com/lambda/latest/dg/deployment-package-v2.html
+[cumulus workflow documenation]:
+  https://nasa.github.io/cumulus/docs/workflows/input_output
