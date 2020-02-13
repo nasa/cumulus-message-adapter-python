@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## Unreleased
+
+- **CUMULUS-1486**
+  - Updated target python versions to more accurately reflect python 3 compatibility/cumulus-message adapter versions
+  - Updated requirements to require cumulus-message-adapter 1.3.x
+
 ## [v1.1.1] - 2019-12-03
 
 ### Added
