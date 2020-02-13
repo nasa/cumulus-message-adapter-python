@@ -21,7 +21,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 __version__ = imp.load_source('version', 'version.py').__version__
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
-# Fields marked asF "Optional" may be commented out.
+# Fields marked as "Optional" may be commented out.
 
 setup(
     name='cumulus_message_adapter_python',  # Required
