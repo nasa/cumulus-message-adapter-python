@@ -33,7 +33,7 @@ references:
         # fallback to using the latest cache if no exact match is found
         - v1-dependencies-
 
-  save_cache_python27: &save_cache_python38
+  save_cache_python38: &save_cache_python38
     save_cache:
       paths:
         - ~/venv38
