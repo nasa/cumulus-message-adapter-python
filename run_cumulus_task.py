@@ -46,7 +46,7 @@ def run_cumulus_task(
     """
 
     set_sys_path()
-    from message_adapter.message_adapter import message_adapter
+    from message_adapter.message_adapter import MessageAdapter
 
     context_dict = vars(context) if context else {}
     logger = CumulusLogger()
@@ -68,9 +68,9 @@ def run_cumulus_task(
             logger.error(exception)
             raise
 
-    adapter = message_adapter(schemas)
-    full_event = adapter.loadAndUpdateRemoteEvent(cumulus_message, context_dict)
-    nested_event = adapter.loadNestedEvent(full_event, context_dict)
+    adapter = MessageAdapter(schemas)
+    full_event = adapter.load_and_update_remote_event(cumulus_message, context_dict)
+    nested_event = adapter.load_nested_event(full_event, context_dict)
     message_config = nested_event.get('messageConfig', {})
 
     try:
@@ -85,4 +85,4 @@ def run_cumulus_task(
         logger.error(exception)
         raise
 
-    return adapter.createNextEvent(task_response, full_event, message_config)
+    return adapter.create_next_event(task_response, full_event, message_config)
