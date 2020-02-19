@@ -4,7 +4,7 @@
 #
 version: 2
 references:
-  container_python27: &container_python38
+  container_python38: &container_python38
     docker:
       - image: circleci/python:3.8.1
       - name: localstack
