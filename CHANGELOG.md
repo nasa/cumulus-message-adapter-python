@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [v1.2.1] - 2019-02-19
+
+- **CUMULUS-2078**
+  - Update release requirements to require cumulus-message-adapter >=1.2.0, <
+    1.4.x as cumulus-message-adapter 1.3.x is compatible with this module
+
 ## [v1.2.0] - 2019-02-19
 
 - **CUMULUS-1486**
