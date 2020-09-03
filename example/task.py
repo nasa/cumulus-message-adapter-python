@@ -4,7 +4,7 @@ import sys
 from run_cumulus_task import run_cumulus_task
 from cumulus_logger import CumulusLogger
 
-logger = CumulusLogger()
+logger = CumulusLogger(name="log_name")
 
 schemas = {
     "input": "schemas/input.json",
