@@ -25,6 +25,6 @@ def task(event, context):
 
 def handler(event, context):
     """handler that is provided to aws lambda"""
-    # make sure event & context metadata is set in the logger
+    # make sure event & context metadata are set in the logger
     logger.setMetadata(event, context)
     return run_cumulus_task(task, event, context, schemas)
