@@ -36,6 +36,17 @@ class TestSledHandler(unittest.TestCase):
             name = exception.args[0]
             self.assertEqual(name, 'SomeError')
 
+    def test_empty_error(self):
+        empty_exception = Exception()
+        def empty_error_fn(event, context):
+            raise empty_exception
+        test_event = create_event()
+        context = LambdaContextMock()
+        try:
+            run_cumulus_task(empty_error_fn, test_event, context)
+        except Exception as exception:
+            self.assertEqual(exception, empty_exception)
+
     def test_simple_handler_without_context(self):
         def handler_fn(event, context):
             return event

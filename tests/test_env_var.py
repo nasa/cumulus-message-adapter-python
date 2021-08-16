@@ -32,3 +32,16 @@ class TestSledHandler(unittest.TestCase):
         response = run_cumulus_task(
             disabled_adapter_handler_fn, test_event, context)
         self.assertEqual(response["message"], "hello")
+
+    def test_message_adapter_disabled_empty_exception(self):
+        empty_exception = Exception()
+        def disabled_adapter_handler_empty_exception_fn(event, context):
+            raise empty_exception
+
+        os.environ['CUMULUS_MESSAGE_ADAPTER_DISABLED'] = 'true'
+        test_event = create_event()
+        context = LambdaContextMock()
+        try:
+            run_cumulus_task(disabled_adapter_handler_empty_exception_fn, test_event, context)
+        except Exception as exception:
+            self.assertEqual(exception, empty_exception)
