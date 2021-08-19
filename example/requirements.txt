@@ -1,2 +1,2 @@
-git+git://github.com/nasa/cumulus-message-adapter#egg=cumulus-message-adapter
-git+git://github.com/nasa/cumulus-message-adapter-python#egg=cumulus-message-adapter-python
+git+https://github.com/nasa/cumulus-message-adapter#egg=cumulus-message-adapter
+git+https://github.com/nasa/cumulus-message-adapter-python#egg=cumulus-message-adapter-python
