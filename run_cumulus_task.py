@@ -19,6 +19,19 @@ def set_sys_path():
     if os.path.isfile('cumulus-message-adapter.zip'):
         sys.path.insert(0, 'cumulus-message-adapter.zip')
 
+def handle_task_exception(
+    exception,
+    cumulus_message,
+    logger
+):
+    name = exception.args[0] if exception.args else None
+    if isinstance(name, str) and 'WorkflowError' in name:
+        cumulus_message['payload'] = None
+        cumulus_message['exception'] = name
+        logger.error('WorkflowError')
+        return cumulus_message
+    logger.error(exception)
+    raise
 
 def run_cumulus_task(
         task_function,
@@ -59,14 +72,7 @@ def run_cumulus_task(
         try:
             return task_function(cumulus_message, context, **taskargs)
         except Exception as exception:
-            name = exception.args[0]
-            if isinstance(name, str) and 'WorkflowError' in name:
-                cumulus_message['payload'] = None
-                cumulus_message['exception'] = name
-                logger.error('WorkflowError')
-                return cumulus_message
-            logger.error(exception)
-            raise
+            return handle_task_exception(exception, cumulus_message, logger)
 
     adapter = MessageAdapter(schemas)
     full_event = adapter.load_and_update_remote_event(cumulus_message, context_dict)
@@ -76,13 +82,6 @@ def run_cumulus_task(
     try:
         task_response = task_function(nested_event, context, **taskargs)
     except Exception as exception:
-        name = exception.args[0]
-        if isinstance(name, str) and 'WorkflowError' in name:
-            cumulus_message['payload'] = None
-            cumulus_message['exception'] = name
-            logger.error('WorkflowError')
-            return cumulus_message
-        logger.error(exception)
-        raise
+        return handle_task_exception(exception, cumulus_message, logger)
 
     return adapter.create_next_event(task_response, full_event, message_config)
