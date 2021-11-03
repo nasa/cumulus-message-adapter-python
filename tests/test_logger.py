@@ -22,8 +22,7 @@ class TestLogger(unittest.TestCase):
 
     def test_simple_message(self):
         event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(event=event, context=context)
         msg = logger.createMessage("test simple")
         self.assertEqual(msg["sender"], context.function_name)
         self.assertEqual(msg["version"], context.function_version)
@@ -46,8 +45,7 @@ class TestLogger(unittest.TestCase):
 
     def test_parameter_configured_message(self):
         event, context = create_parameter_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(event=event, context=context)
         msg = logger.createMessage("test parameter event")
         self.assertEqual(msg["sender"], context.function_name)
         self.assertEqual(msg["version"], context.function_version)
@@ -71,25 +69,19 @@ class TestLogger(unittest.TestCase):
         logger.info("test parameter configured message")
 
     def test_empty_event_and_context(self):
-        event, context = {}, {}
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(event={}, context={})
         msg = logger.createMessage("empty event and context")
         self.assertEqual(set(msg.keys()),
                          {"version", "sender", "message", "timestamp"})
 
     def test_formatted_message(self):
-        event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger()
         msg = logger.createMessage("test formatted {} {}", "foo", "bar")
         self.assertEqual(msg["message"], "test formatted foo bar")
         logger.debug("test formatted {} {}", "foo", "bar")
 
     def test_error_message(self):
-        event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger()
         try:
             1 / 0
         except ZeroDivisionError as ex:
@@ -116,9 +108,7 @@ class TestLogger(unittest.TestCase):
             logger.trace("test exc_info", exc_info=ex)
 
     def test_logger_name_loglevel(self):
-        event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger('logger_test', logging.INFO)
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(logger=CumulusLogger('logger_test', logging.INFO))
         self.assertTrue(logger.logger.getEffectiveLevel() == logging.INFO)
         logger.debug("test logging level debug")
         logger.info("test logging level info")
