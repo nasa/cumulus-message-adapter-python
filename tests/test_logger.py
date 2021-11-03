@@ -7,6 +7,19 @@ from helpers import LambdaContextMock, create_event, create_parameter_event
 
 
 class TestLogger(unittest.TestCase):
+    def set_up_logger(self, event=None, context=None, logger=None):
+        if event is None:
+            event = create_event()
+
+        if context is None:
+            context = LambdaContextMock()
+
+        if logger is None:
+            logger = CumulusLogger()
+        logger.setMetadata(event, context)
+
+        return logger
+
     def test_simple_message(self):
         event, context = create_event(), LambdaContextMock()
         logger = CumulusLogger()
@@ -110,3 +123,18 @@ class TestLogger(unittest.TestCase):
         logger.debug("test logging level debug")
         logger.info("test logging level info")
         logger.warning("test logging level warning")
+
+    def test_simple_message_with_braces_no_args(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test simple {}")
+        self.assertEqual(msg["message"], "test simple {}")
+
+    def test_simple_message_with_braces_no_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test {simple}")
+        self.assertEqual(msg["message"], "test {simple}")
+
+    def test_message_with_json_no_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage('some message about JSON and the json: {"test": "simple"}')
+        self.assertEqual(msg["message"], 'some message about JSON and the json: {"test": "simple"}')
