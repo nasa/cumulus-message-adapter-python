@@ -80,6 +80,21 @@ class TestLogger(unittest.TestCase):
         self.assertEqual(msg["message"], "test formatted foo bar")
         logger.debug("test formatted {} {}", "foo", "bar")
 
+    def test_formatted_message_with_positional_args(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test formatted {0}", "bar")
+        self.assertEqual(msg["message"], "test formatted bar")
+
+    def test_formatted_message_with_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test formatted {foo}", foo="bar")
+        self.assertEqual(msg["message"], "test formatted bar")
+
+    def test_formatted_message_with_args_and_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test formatted {0} {foo}", 'foo', foo="bar")
+        self.assertEqual(msg["message"], "test formatted foo bar")
+
     def test_error_message(self):
         logger = self.set_up_logger()
         try:
