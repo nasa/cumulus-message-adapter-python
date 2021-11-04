@@ -209,8 +209,14 @@ class CumulusLogger:
         if isinstance(message, Mapping):
             msg.update(message)
         else:
-            # In case message is not a string (e.g., exception) use str
-            fmt_message = str(message).format(*args, **kwargs)
+            # - In case message is not a string (e.g., exception) use str
+            # - Only call str.format() if args or kwargs are actually given, so
+            #   that curly braces in the message do not cause an IndexError or
+            #   KeyError here
+            fmt_message = str(message)
+            if args or kwargs:
+                fmt_message = fmt_message.format(*args, **kwargs)
+
             ex_message = _get_exception_message(**kwargs)
             msg["message"] = " ".join(filter(None, [fmt_message, ex_message]))
 
