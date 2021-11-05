@@ -7,10 +7,22 @@ from helpers import LambdaContextMock, create_event, create_parameter_event
 
 
 class TestLogger(unittest.TestCase):
+    def set_up_logger(self, event=None, context=None, logger=None):
+        if event is None:
+            event = create_event()
+
+        if context is None:
+            context = LambdaContextMock()
+
+        if logger is None:
+            logger = CumulusLogger()
+        logger.setMetadata(event, context)
+
+        return logger
+
     def test_simple_message(self):
         event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(event=event, context=context)
         msg = logger.createMessage("test simple")
         self.assertEqual(msg["sender"], context.function_name)
         self.assertEqual(msg["version"], context.function_version)
@@ -33,8 +45,7 @@ class TestLogger(unittest.TestCase):
 
     def test_parameter_configured_message(self):
         event, context = create_parameter_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(event=event, context=context)
         msg = logger.createMessage("test parameter event")
         self.assertEqual(msg["sender"], context.function_name)
         self.assertEqual(msg["version"], context.function_version)
@@ -58,25 +69,34 @@ class TestLogger(unittest.TestCase):
         logger.info("test parameter configured message")
 
     def test_empty_event_and_context(self):
-        event, context = {}, {}
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(event={}, context={})
         msg = logger.createMessage("empty event and context")
         self.assertEqual(set(msg.keys()),
                          {"version", "sender", "message", "timestamp"})
 
     def test_formatted_message(self):
-        event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger()
         msg = logger.createMessage("test formatted {} {}", "foo", "bar")
         self.assertEqual(msg["message"], "test formatted foo bar")
         logger.debug("test formatted {} {}", "foo", "bar")
 
+    def test_formatted_message_with_positional_args(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test formatted {0}", "bar")
+        self.assertEqual(msg["message"], "test formatted bar")
+
+    def test_formatted_message_with_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test formatted {foo}", foo="bar")
+        self.assertEqual(msg["message"], "test formatted bar")
+
+    def test_formatted_message_with_args_and_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test formatted {0} {foo}", 'foo', foo="bar")
+        self.assertEqual(msg["message"], "test formatted foo bar")
+
     def test_error_message(self):
-        event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger()
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger()
         try:
             1 / 0
         except ZeroDivisionError as ex:
@@ -103,10 +123,23 @@ class TestLogger(unittest.TestCase):
             logger.trace("test exc_info", exc_info=ex)
 
     def test_logger_name_loglevel(self):
-        event, context = create_event(), LambdaContextMock()
-        logger = CumulusLogger('logger_test', logging.INFO)
-        logger.setMetadata(event, context)
+        logger = self.set_up_logger(logger=CumulusLogger('logger_test', logging.INFO))
         self.assertTrue(logger.logger.getEffectiveLevel() == logging.INFO)
         logger.debug("test logging level debug")
         logger.info("test logging level info")
         logger.warning("test logging level warning")
+
+    def test_simple_message_with_braces_no_args(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test simple {}")
+        self.assertEqual(msg["message"], "test simple {}")
+
+    def test_simple_message_with_braces_no_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage("test {simple}")
+        self.assertEqual(msg["message"], "test {simple}")
+
+    def test_message_with_json_no_kwargs(self):
+        logger = self.set_up_logger()
+        msg = logger.createMessage('some message about JSON and the json: {"test": "simple"}')
+        self.assertEqual(msg["message"], 'some message about JSON and the json: {"test": "simple"}')
