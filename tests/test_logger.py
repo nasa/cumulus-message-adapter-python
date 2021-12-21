@@ -7,7 +7,7 @@ from helpers import LambdaContextMock, create_event, create_parameter_event
 
 
 class TestLogger(unittest.TestCase):
-    def set_up_logger(self, event=None, context=None, logger=None):
+    def set_up_logger(self, event=None, context=None, logger=None, **kwargs):
         if event is None:
             event = create_event()
 
@@ -15,7 +15,7 @@ class TestLogger(unittest.TestCase):
             context = LambdaContextMock()
 
         if logger is None:
-            logger = CumulusLogger()
+            logger = CumulusLogger(**kwargs)
         logger.setMetadata(event, context)
 
         return logger
