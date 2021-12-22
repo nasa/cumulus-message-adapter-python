@@ -76,7 +76,7 @@ def run_cumulus_task(
 
     adapter = MessageAdapter(schemas)
     full_event = adapter.load_and_update_remote_event(cumulus_message, context_dict)
-    nested_event = adapter.load_nested_event(full_event, context_dict)
+    nested_event = adapter.load_nested_event(full_event)
     message_config = nested_event.get('messageConfig', {})
 
     try:
