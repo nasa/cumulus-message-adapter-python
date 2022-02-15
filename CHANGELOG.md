@@ -4,10 +4,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [v2.0.1] - 2022-02-15
+
+- [PR 43](https://github.com/nasa/cumulus-message-adapter-python/pull/43)
+  - Fixed issue with duplicate instances of `CumulusLogger`
+
+## [v2.0.0] - 2021-12-21
+
+- **CUMULUS-2577**
+  - Update to match call signatures in [cumulus-message-adapter](https://github.com/nasa/cumulus-message-adapter) 2.0.0.  This release requires `cumulus-message-adapter` > 2.0.0.
+  - Update test fixture to remove deprecated 'workflow_config' config key
+
 ## [v1.2.2] - 2021-11-04
 
 - [Issue #38](https://github.com/nasa/cumulus-message-adapter-python/issues/38)
   - Update `CumulusLogger.createMessage` to allow logging messages with curly braces
+- **CUMULUS-2431**
+  - Fix exception handling not to assume index in the exception args tuple
 
 ## [v1.2.1] - 2019-02-19
 

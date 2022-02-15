@@ -21,7 +21,7 @@ def create_parameter_event():
 
 def create_event():
     return {
-        "workflow_config": {
+        "task_config": {
             "Example": {
                 "foo": "wut",
                 "cumulus_message": {}

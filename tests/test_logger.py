@@ -7,7 +7,7 @@ from helpers import LambdaContextMock, create_event, create_parameter_event
 
 
 class TestLogger(unittest.TestCase):
-    def set_up_logger(self, event=None, context=None, logger=None):
+    def set_up_logger(self, event=None, context=None, logger=None, **kwargs):
         if event is None:
             event = create_event()
 
@@ -15,7 +15,7 @@ class TestLogger(unittest.TestCase):
             context = LambdaContextMock()
 
         if logger is None:
-            logger = CumulusLogger()
+            logger = CumulusLogger(**kwargs)
         logger.setMetadata(event, context)
 
         return logger
@@ -143,3 +143,11 @@ class TestLogger(unittest.TestCase):
         logger = self.set_up_logger()
         msg = logger.createMessage('some message about JSON and the json: {"test": "simple"}')
         self.assertEqual(msg["message"], 'some message about JSON and the json: {"test": "simple"}')
+
+    def test_multiple_instances_with_same_name_dont_have_multiple_handlers(self):
+        logger1 = self.set_up_logger(name='test')
+        self.assertEqual(1, len(logger1.logger.handlers))
+
+        logger2 = self.set_up_logger(name='test')
+        self.assertEqual(1, len(logger1.logger.handlers))
+        self.assertEqual(1, len(logger2.logger.handlers))
