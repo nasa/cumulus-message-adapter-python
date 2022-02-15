@@ -107,6 +107,7 @@ jobs:
             twine upload --skip-existing --username "${PYPI_USER}" --password "${PYPI_PASS}" dist/*
 
   publish_release:
+    <<: *container_python36
     steps:
       - checkout
       - attach_workspace:
