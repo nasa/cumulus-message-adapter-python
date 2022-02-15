@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [v2.0.1] - 2022-02-15
+
+- [PR 43](https://github.com/nasa/cumulus-message-adapter-python/pull/43)
+  - Fixed issue with duplicate instances of `CumulusLogger`
+
 ## [v2.0.0] - 2021-12-21
 
 - **CUMULUS-2577**
