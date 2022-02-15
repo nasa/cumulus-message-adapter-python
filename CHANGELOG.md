@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## [v2.0.0] - 2021-12-21
+
+- **CUMULUS-2577**
+  - Update to match call signatures in [cumulus-message-adapter](https://github.com/nasa/cumulus-message-adapter) 2.0.0.  This release requires `cumulus-message-adapter` > 2.0.0.
+  - Update test fixture to remove deprecated 'workflow_config' config key
+
 ## [v1.2.2] - 2021-11-04
 
 - [Issue #38](https://github.com/nasa/cumulus-message-adapter-python/issues/38)
