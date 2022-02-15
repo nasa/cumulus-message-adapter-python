@@ -19,6 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 - [Issue #38](https://github.com/nasa/cumulus-message-adapter-python/issues/38)
   - Update `CumulusLogger.createMessage` to allow logging messages with curly braces
+- **CUMULUS-2431**
+  - Fix exception handling not to assume index in the exception args tuple
 
 ## [v1.2.1] - 2019-02-19
 
