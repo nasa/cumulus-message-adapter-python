@@ -88,15 +88,18 @@ def _get_exception_message(**kwargs):
 class CumulusLogger:
     def __init__(self, name=__name__, level=logging.DEBUG):
         """Creates a logger with a name and loggging level."""
-        log_handler = logging.StreamHandler()
-        log_handler.setLevel(logging.DEBUG)
-        log_handler.setFormatter(logging.Formatter('%(message)s'))
 
         self.logger = logging.getLogger(name)
-        self.logger.addHandler(log_handler)
         self.logger.setLevel(level)
+
         # Avoid duplicate message in AWS cloudwatch
         self.logger.propagate = False
+        if not self.logger.handlers:
+            log_handler = logging.StreamHandler()
+            log_handler.setLevel(logging.DEBUG)
+            log_handler.setFormatter(logging.Formatter('%(message)s'))
+            self.logger.addHandler(log_handler)
+
         self.event = None
         self.context = None
         self._msg = {}
