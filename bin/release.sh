@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -ex
-VERSION_TAG=$(awk -F\' '{print $2,$4}' version.py)
+VERSION_TAG=$(awk -F\' '{print $2}' version.py)
 LATEST_TAG=$(curl -H \
   "Authorization: token $GITHUB_TOKEN" \
   https://api.github.com/repos/nasa/cumulus-message-adapter-python/tags | jq --raw-output '.[0].name')
