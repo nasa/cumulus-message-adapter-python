@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
+## [v2.1.0] - 2023-02-08
+
 - **CUMULUS-3189**
   - [Issue #47](https://github.com/nasa/cumulus-message-adapter-python/issues/47)
   - [PR 48](https://github.com/nasa/cumulus-message-adapter-python/pull/48)
