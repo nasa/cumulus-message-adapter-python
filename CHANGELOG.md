@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
+## Unreleased
+
+- **CUMULUS-3189**
+  - [Issue #47](https://github.com/nasa/cumulus-message-adapter-python/issues/47)
+  - [PR 48](https://github.com/nasa/cumulus-message-adapter-python/pull/48)
+  - Update requirements.txt to support new pip3 syntax
+
 ## [v2.0.1] - 2022-02-15
 
 - [PR 43](https://github.com/nasa/cumulus-message-adapter-python/pull/43)
