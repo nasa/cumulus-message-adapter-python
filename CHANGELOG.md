@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
+## [v2.1.1] - 2023-05-11
+- **CUMULUS-3270**
+  - Update to utilize `cumulus-message-adapter` >= 2.0.3, to pick up updated boto3 SDK version.
+
 ## [v2.1.0] - 2023-02-08
 
 - **CUMULUS-3189**

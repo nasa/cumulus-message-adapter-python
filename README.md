@@ -238,6 +238,6 @@ This approach has a few major advantages:
 [Cumulus Documentation]:
   https://nasa.github.io/cumulus/
 [creating release packages]:
-  https://docs.aws.amazon.com/lambda/latest/dg/deployment-package-v2.html
+  https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-package.html
 [cumulus workflow documenation]:
   https://nasa.github.io/cumulus/docs/workflows/input_output
