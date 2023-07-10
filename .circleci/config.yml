@@ -89,7 +89,7 @@ jobs:
             . ~/venv310/bin/activate
             pylint_runner
             # CUMULUS_ENV=testing nosetests -v -s --with-doctest
-            CUMULUS_ENV=testing nose2 -v -s --with-doctest
+            CUMULUS_ENV=testing nose2 -v --with-doctest DEFAULT
   
   build_python38:
     <<: *container_python38
@@ -113,7 +113,7 @@ jobs:
           command: |
             . ~/venv38/bin/activate
             # CUMULUS_ENV=testing nosetests -v -s --with-doctest
-            CUMULUS_ENV=testing nose2 -v -s --with-doctest
+            CUMULUS_ENV=testing nose2 -v --with-doctest DEFAULT
 
   build_python36:
     <<: *container_python36
@@ -137,7 +137,7 @@ jobs:
           command: |
             . ~/venv36/bin/activate
             # CUMULUS_ENV=testing nosetests -v -s --with-doctest
-            CUMULUS_ENV=testing nose2 -v -s --with-doctest
+            CUMULUS_ENV=testing nose2 -v --with-doctest DEFAULT
 
   publish_pypi:
     <<: *container_python310
