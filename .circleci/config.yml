@@ -67,7 +67,6 @@ jobs:
             LOCALSTACK_HOST: localstack
           command: |
             . ~/venv310/bin/activate
-            pylint_runner
             # CUMULUS_ENV=testing nosetests -v -s --with-doctest
             CUMULUS_ENV=testing nose2 -v
   
