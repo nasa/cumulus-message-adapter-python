@@ -68,6 +68,7 @@ jobs:
           command: |
             . ~/venv310/bin/activate
             # CUMULUS_ENV=testing nosetests -v -s --with-doctest
+            # nose2 --plugin nose2.plugins.doctests --with-doctest
             CUMULUS_ENV=testing nose2 -v
   
   build_python38:
@@ -92,6 +93,7 @@ jobs:
           command: |
             . ~/venv38/bin/activate
             # CUMULUS_ENV=testing nosetests -v -s --with-doctest
+            nose2 --plugin nose2.plugins.doctests --with-doctest
             CUMULUS_ENV=testing nose2 -v
 
   publish_pypi:
