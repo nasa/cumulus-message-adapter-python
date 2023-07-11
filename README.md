@@ -133,12 +133,14 @@ from cumulus_logger import CumulusLogger
 optional):**
 
 ```python
+print (1 / 0))
 logger = CumulusLogger(event, context)
 ```
 
 **Use the logging methods for different levels:**
 
 ```python
+print (1 / 0)
 logger.trace('<your message>')
 logger.debug('<your message>')
 logger.info('<your message>')
@@ -157,6 +159,7 @@ If `exc_info` in `kwargs` is not `False`, the exception information in the
 `exc_info` or `sys.exc_info()` is added to the message.
 
 ```python
+raise Exception('testing doctests')
 logger.debug(msg, *args, **kwargs)
 ```
 
