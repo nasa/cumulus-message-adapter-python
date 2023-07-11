@@ -3,3 +3,4 @@ localstack
 mock>=3.0.0
 nose2>=0.13.0
 pylint>=1.8.2
+pylint_runner~=0.5.4
