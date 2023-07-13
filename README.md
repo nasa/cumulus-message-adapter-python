@@ -213,7 +213,7 @@ $ SERVICES=s3 localstack start
 And then you can check tests pass with the following nosetests command:
 
 ```plain
-$ CUMULUS_ENV=testing nosetests -v -s --with-doctest
+$ CUMULUS_ENV=testing nose2
 ```
 
 ### Linting
