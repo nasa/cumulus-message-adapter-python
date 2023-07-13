@@ -10,6 +10,12 @@ from run_cumulus_task import run_cumulus_task, set_sys_path
 
 
 class TestSledHandler(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        cls.osenv = copy.deepcopy(os.environ)
+    @classmethod
+    def tearDownClass(cls):
+        os.environ = cls.osenv
     @patch('os.path.isfile')
     def test_set_sys_path_sets_adapter_dir_paths(self, isfile_mock):
         isfile_mock.value = True
