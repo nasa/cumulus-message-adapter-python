@@ -4,6 +4,13 @@
 #
 version: 2
 references:
+  container_python310: &container_python310
+    docker:
+      - image: cimg/python:3.10.11
+      - name: localstack
+        image: localstack/localstack:2.0.2
+    working_directory: ~/repo
+  
   container_python38: &container_python38
     docker:
       - image: circleci/python:3.8.1
@@ -11,14 +18,14 @@ references:
         image: localstack/localstack
     working_directory: ~/repo
 
-  container_python36: &container_python36
-    docker:
-      - image: circleci/python:3.6
-      - name: localstack
-        image: localstack/localstack
-    working_directory: ~/repo
-
   # Download and cache dependencies
+  restore_cache_python310: &restore_cache_python310
+    restore_cache:
+      keys:
+        - v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+  
   restore_cache_python38: &restore_cache_python38
     restore_cache:
       keys:
@@ -26,26 +33,42 @@ references:
         # fallback to using the latest cache if no exact match is found
         - v1-dependencies-
 
-  restore_cache_python36: &restore_cache_python36
-    restore_cache:
-      keys:
-        - v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
-
+  save_cache_python310: &save_cache_python310
+    save_cache:
+      paths:
+        - ~/venv310
+      key: v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
+  
   save_cache_python38: &save_cache_python38
     save_cache:
       paths:
         - ~/venv38
       key: v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
 
-  save_cache_python36: &save_cache_python36
-    save_cache:
-      paths:
-        - ~/venv36
-      key: v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-
 jobs:
+  build_python310:
+    <<: *container_python310
+    steps:
+      - checkout
+      - *restore_cache_python310
+      - run:
+          name: install dependencies
+          command: |
+            pip install --user --upgrade virtualenv
+            virtualenv ~/venv310
+            . ~/venv310/bin/activate
+            pip install -r requirements.txt
+            pip install -r requirements-dev.txt
+            pip install .
+      - *save_cache_python310
+      - run:
+          name: run tests
+          environment:
+            LOCALSTACK_HOST: localstack
+          command: |
+            . ~/venv310/bin/activate
+            CUMULUS_ENV=testing nose2 --plugin nose2.plugins.doctests --with-doctest
+  
   build_python38:
     <<: *container_python38
     steps:
@@ -54,7 +77,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install virtualenv
+            pip install --user virtualenv
             virtualenv ~/venv38
             . ~/venv38/bin/activate
             pip install -r requirements.txt
@@ -67,47 +90,24 @@ jobs:
             LOCALSTACK_HOST: localstack
           command: |
             . ~/venv38/bin/activate
-            CUMULUS_ENV=testing nosetests -v -s --with-doctest
-
-  build_python36:
-    <<: *container_python36
-    steps:
-      - checkout
-      - *restore_cache_python36
-      - run:
-          name: install dependencies
-          command: |
-            pip install --user virtualenv
-            virtualenv ~/venv36
-            . ~/venv36/bin/activate
-            pip install -r requirements.txt
-            pip install -r requirements-dev.txt
-            pip install .
-      - *save_cache_python36
-      - run:
-          name: run tests
-          environment:
-            LOCALSTACK_HOST: localstack
-          command: |
-            . ~/venv36/bin/activate
-            CUMULUS_ENV=testing nosetests -v -s --with-doctest
+            CUMULUS_ENV=testing nose2 --plugin nose2.plugins.doctests --with-doctest
 
   publish_pypi:
-    <<: *container_python36
+    <<: *container_python310
     steps:
       - checkout
-      - *restore_cache_python36
+      - *restore_cache_python310
       - run:
           name: Deploy to PyPi
           command: |
-            virtualenv ~/venv36
-            . ~/venv36/bin/activate
+            virtualenv ~/venv310
+            . ~/venv310/bin/activate
             pip install twine
             python setup.py sdist
             twine upload --skip-existing --username "${PYPI_USER}" --password "${PYPI_PASS}" dist/*
 
   publish_release:
-    <<: *container_python36
+    <<: *container_python310
     steps:
       - checkout
       - attach_workspace:
@@ -119,13 +119,17 @@ jobs:
 
 workflows:
   version: 2
-  build_test_38:
+  build_publish_test_310:
     jobs:
-      - build_python38
-  build_publish_test_36:
-    jobs:
-      - build_python36
+      - build_python310
+      - publish_release:
+          filters:
+            branches:
+              only: master
       - publish_pypi:
           filters:
             branches:
               only: master
+  build_test_38:
+    jobs:
+      - build_python38

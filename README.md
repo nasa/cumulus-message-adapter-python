@@ -85,15 +85,16 @@ Simple example of using this package's `run_cumulus_task` function as a wrapper
 around another function:
 
 ```python
-from run_cumulus_task import run_cumulus_task
+>>> from run_cumulus_task import run_cumulus_task
 
 # simple task that returns the event
-def task(event, context):
-    return event
+>>> def task(event, context):
+...     return event
 
 # handler that is provided to aws lambda
-def handler(event, context):
-    return run_cumulus_task(task, event, context)
+>>> def handler(event, context):
+...     return run_cumulus_task(task, event, context)
+
 ```
 
 For a full example see the [example folder](./example).
@@ -126,25 +127,34 @@ provided to log error, fatal, warning, debug, info, and trace.
 **Import the `CumulusLogger` class:**
 
 ```python
-from cumulus_logger import CumulusLogger
+>>> from cumulus_logger import CumulusLogger
+
 ```
 
 **Instantiate the logger inside the task definition (name and level are
 optional):**
 
 ```python
-logger = CumulusLogger(event, context)
+>>> import logging
+>>> logger = CumulusLogger("event_name", logging.ERROR)
+
 ```
 
 **Use the logging methods for different levels:**
 
 ```python
-logger.trace('<your message>')
-logger.debug('<your message>')
-logger.info('<your message>')
-logger.warn('<your message>')
-logger.error('<your message>')
-logger.fatal('<your message>')
+>>> logger.trace('<your message>')
+
+>>> logger.debug('<your message>')
+
+>>> logger.info('<your message>')
+
+>>> logger.warn('<your message>')
+
+>>> logger.error('<your message>')
+
+>>> logger.fatal('<your message>')
+
 ```
 
 **It can also take additional non-keyword and keyword arguments as in Python
@@ -157,34 +167,36 @@ If `exc_info` in `kwargs` is not `False`, the exception information in the
 `exc_info` or `sys.exc_info()` is added to the message.
 
 ```python
-logger.debug(msg, *args, **kwargs)
+>>> logger.debug(msg, *args, **kwargs)
+
 ```
 
 **Example usage:**
 
 ```python
-import os
-import sys
+>>> import os
+>>> import sys
 
-from run_cumulus_task import run_cumulus_task
-from cumulus_logger import CumulusLogger
+>>> from run_cumulus_task import run_cumulus_task
+>>> from cumulus_logger import CumulusLogger
 
 # instantiate CumulusLogger
-logger = CumulusLogger()
+>>> logger = CumulusLogger()
 
-def task(event, context):
-    logger.info('task executed')
+>>> def task(event, context):
+...     logger.info('task executed')
+... 
+...     # log error when an exception is caught
+...     logger.error("task formatted message {} exc_info ", "bar", exc_info=True)
+... 
+...     # return the output of the task
+...     return { "example": "output" }
 
-    # log error when an exception is caught
-    logger.error("task formatted message {} exc_info ", "bar", exc_info=True)
+>>> def handler(event, context):
+...     # make sure event & context metadata is set in the logger
+...     logger.setMetadata(event, context)
+...     return run_cumulus_task(task, event, context)
 
-    # return the output of the task
-    return { "example": "output" }
-
-def handler(event, context):
-    # make sure event & context metadata is set in the logger
-    logger.setMetadata(event, context)
-    return run_cumulus_task(task, event, context)
 ```
 
 ### Running Tests
@@ -201,7 +213,7 @@ $ SERVICES=s3 localstack start
 And then you can check tests pass with the following nosetests command:
 
 ```plain
-$ CUMULUS_ENV=testing nosetests -v -s --with-doctest
+$ CUMULUS_ENV=testing nose2
 ```
 
 ### Linting
@@ -238,6 +250,6 @@ This approach has a few major advantages:
 [Cumulus Documentation]:
   https://nasa.github.io/cumulus/
 [creating release packages]:
-  https://docs.aws.amazon.com/lambda/latest/dg/deployment-package-v2.html
+  https://docs.aws.amazon.com/lambda/latest/dg/gettingstarted-package.html
 [cumulus workflow documenation]:
   https://nasa.github.io/cumulus/docs/workflows/input_output
