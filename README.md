@@ -167,8 +167,8 @@ If `exc_info` in `kwargs` is not `False`, the exception information in the
 `exc_info` or `sys.exc_info()` is added to the message.
 
 ```python
-raise Exception('testing doctests')
-logger.debug(msg, *args, **kwargs)
+>>> logger.debug(msg, *args, **kwargs)
+
 ```
 
 **Example usage:**
