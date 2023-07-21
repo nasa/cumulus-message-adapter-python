@@ -14,7 +14,7 @@ rm -rf "$PROJECT_DIR/task/"
 zip "$PROJECT_DIR/task.zip" -X -r ./* -x '*.git*' '*bin*' 'task/'
 
 # include deps from site-packages
-cd "$VIRTUAL_ENV/lib/python2.7/site-packages/"
+cd "$VIRTUAL_ENV/lib/python3.10/site-packages/"
 zip -r9 "$PROJECT_DIR/task.zip" ./*
 
 # back to task dir
