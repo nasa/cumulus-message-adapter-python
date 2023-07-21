@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [v2.2.0] - 2023-05-11
 - **CUMULUS-3270**
   - Update to utilize `cumulus-message-adapter` >= 2.0.3, to pick up updated Python and boto3 SDK version.
-  - Update to Python 3.10, removing Python 3.8 and 3.6 (EOL)
+  - Update to Python 3.10 removing 3.6 (EOL)
   - change test framework to nose2, as nose does not work with the new Python version
 
 ## [v2.1.0] - 2023-02-08
