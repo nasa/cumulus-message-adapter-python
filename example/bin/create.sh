@@ -10,6 +10,6 @@ aws lambda create-function \
 --zip-file fileb://task.zip \
 --role "arn:aws:iam::$AWS_IAM_ID:role/lambda_basic_execution"  \
 --handler task.handler \
---runtime python2.7 \
+--runtime python3.10 \
 --timeout 15 \
 --memory-size 512
