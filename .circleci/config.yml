@@ -95,6 +95,9 @@ jobs:
   publish_pypi:
     <<: *container_python310
     steps:
+      - add_ssh_keys:
+        fingerprints:
+          - ff:de:9d:aa:27:2f:df:ee:49:df:82:70:50:28:d1:3a
       - checkout
       - *restore_cache_python310
       - run:
@@ -122,10 +125,7 @@ workflows:
   build_publish_test_310:
     jobs:
       - build_python310
-      - publish_release:
-          filters:
-            branches:
-              only: master
+      - publish_release
       - publish_pypi:
           filters:
             branches:
