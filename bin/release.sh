@@ -1,5 +1,6 @@
 #!/bin/bash
-
+git config --global user.email "ethan.j.carton@nasa.gov"
+git config --global user.name "ecarton"
 set -ex
 VERSION_TAG=$(awk -F\' '{print $2}' version.py)
 LATEST_TAG=$(curl -H \
