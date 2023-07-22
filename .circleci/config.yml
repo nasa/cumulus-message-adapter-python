@@ -95,9 +95,6 @@ jobs:
   publish_pypi:
     <<: *container_python310
     steps:
-      - add_ssh_keys:
-        fingerprints:
-          - ff:de:9d:aa:27:2f:df:ee:49:df:82:70:50:28:d1:3a
       - checkout
       - *restore_cache_python310
       - run:
@@ -112,6 +109,9 @@ jobs:
   publish_release:
     <<: *container_python310
     steps:
+      - add_ssh_keys:
+        fingerprints:
+          - ff:de:9d:aa:27:2f:df:ee:49:df:82:70:50:28:d1:3a
       - checkout
       - attach_workspace:
           at: ./
