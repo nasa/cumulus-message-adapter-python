@@ -112,10 +112,6 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./
-      
-      - add_ssh_keys:
-        fingerprints:
-          - ff:de:9d:aa:27:2f:df:ee:49:df:82:70:50:28:d1:3a
       - run:
           name: Publish release
           command: |
@@ -127,10 +123,7 @@ workflows:
     jobs:
       - build_python310
       - publish_release
-      - publish_pypi:
-          filters:
-            branches:
-              only: master
+      - publish_pypi
   build_test_38:
     jobs:
       - build_python38
