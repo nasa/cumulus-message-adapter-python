@@ -122,8 +122,14 @@ workflows:
   build_publish_test_310:
     jobs:
       - build_python310
-      - publish_release
-      - publish_pypi
+      - publish_release:
+          filters:
+            branches:
+              only: master
+      - publish_pypi:
+          filters:
+            branches:
+              only: master
   build_test_38:
     jobs:
       - build_python38
