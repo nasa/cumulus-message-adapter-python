@@ -8,7 +8,7 @@ references:
     docker:
       - image: cimg/python:3.10.11
       - name: localstack
-        image: localstack/localstack:2.0.2
+        image: localstack/localstack
     working_directory: ~/repo
   
   container_python38: &container_python38
@@ -126,10 +126,14 @@ workflows:
           filters:
             branches:
               only: master
+          requires:
+            - build_python310
       - publish_pypi:
           filters:
             branches:
               only: master
+          requires:
+            - publish_release
   build_test_38:
     jobs:
       - build_python38
