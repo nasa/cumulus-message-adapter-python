@@ -10,13 +10,6 @@ references:
       - name: localstack
         image: localstack/localstack:2.0.2
     working_directory: ~/repo
-  
-  container_python38: &container_python38
-    docker:
-      - image: circleci/python:3.8.1
-      - name: localstack
-        image: localstack/localstack
-    working_directory: ~/repo
 
   # Download and cache dependencies
   restore_cache_python310: &restore_cache_python310
@@ -69,29 +62,6 @@ jobs:
             . ~/venv310/bin/activate
             CUMULUS_ENV=testing nose2 --plugin nose2.plugins.doctests --with-doctest
   
-  build_python38:
-    <<: *container_python38
-    steps:
-      - checkout
-      - *restore_cache_python38
-      - run:
-          name: install dependencies
-          command: |
-            pip install --user virtualenv
-            virtualenv ~/venv38
-            . ~/venv38/bin/activate
-            pip install -r requirements.txt
-            pip install -r requirements-dev.txt
-            pip install .
-      - *save_cache_python38
-      - run:
-          name: run tests
-          environment:
-            LOCALSTACK_HOST: localstack
-          command: |
-            . ~/venv38/bin/activate
-            CUMULUS_ENV=testing nose2 --plugin nose2.plugins.doctests --with-doctest
-
   publish_pypi:
     <<: *container_python310
     steps:
@@ -130,6 +100,3 @@ workflows:
           filters:
             branches:
               only: master
-  build_test_38:
-    jobs:
-      - build_python38
