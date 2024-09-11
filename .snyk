@@ -1,2 +1,4 @@
-language-settings:
-    python: "3.8"
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.0
+language-settings: 
+  python: "3.10"
