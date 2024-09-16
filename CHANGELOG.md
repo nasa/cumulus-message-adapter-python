@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
-## [v2.2.1] - 2024-09-11
+## [v2.3.0] - 2024-09-11
 - **CUMULUS-3838**
   - Update cumulus-message-adapter dependency version to 2.0.4
   - Remove testing for python3.8
