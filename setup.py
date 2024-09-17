@@ -43,12 +43,7 @@ setup(
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        # Specify the Python versions you support here. In particular, ensure
-        # that you indicate whether you support Python 2, Python 3 or both.
-        # Indicate who your project is intended for
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8'
+        'Programming Language :: Python :: 3.10'
     ],
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),
