@@ -18,24 +18,11 @@ references:
         - v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
         # fallback to using the latest cache if no exact match is found
         - v1-dependencies-
-  
-  restore_cache_python38: &restore_cache_python38
-    restore_cache:
-      keys:
-        - v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
 
   save_cache_python310: &save_cache_python310
     save_cache:
       paths:
         - ~/venv310
-      key: v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-  
-  save_cache_python38: &save_cache_python38
-    save_cache:
-      paths:
-        - ~/venv38
       key: v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
 
 jobs:
@@ -93,10 +80,8 @@ workflows:
     jobs:
       - build_python310
       - publish_release:
-          filters:
-            branches:
-              only: master
+          requires:
+            - build_python310
       - publish_pypi:
-          filters:
-            branches:
-              only: master
+          requires:
+            - build_python310
