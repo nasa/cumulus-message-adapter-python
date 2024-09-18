@@ -41,8 +41,6 @@ setup(
     author_email='info@developmentseed.org',  # Optional
     classifiers=[  # Optional
         # Indicate who your project is intended for
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
         'Programming Language :: Python :: 3.10'
     ],
     keywords='nasa cumulus',  # Optional
