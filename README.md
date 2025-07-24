@@ -111,12 +111,16 @@ the [Cumulus Workflow Documenation].
 
 ## Development
 
-### Dependency Installation
 
-```plain
-$ pip install -r requirements-dev.txt
-$ pip install -r requirements.txt
+### Setting up a Development Environment
+
+Install all runtime and development dependencies using pip and pyproject.toml:
+
+```bash
+$ pip install -e .[dev]
 ```
+
+This will install the package in editable mode along with all development dependencies (such as nose2 and mock) required for testing and development.
 
 ### Logging with `CumulusLogger`
 
