@@ -117,7 +117,7 @@ the [Cumulus Workflow Documenation].
 Install all runtime and development dependencies using pip and pyproject.toml:
 
 ```bash
-$ pip install -e .[dev]
+$ pip install -e '.[dev]'
 ```
 
 This will install the package in editable mode along with all development dependencies (such as nose2 and mock) required for testing and development.
