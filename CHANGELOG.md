@@ -6,10 +6,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
-## [v2.4.0] - 2025-09-10
-
 - **CUMULUS-4165
-  - Update build/minimum python version to 3.12
+  - Update build/minimum supported python version to 3.12
+  - Merged in suggested changes from [PR 56](https://github.com/nasa/cumulus-message-adapter-python/pull/56):
+    - Refactored packaging to use a modern,
+    standard approach with pyproject.toml (PEP 621/517/518)
+    - Separated development dependencies (nose2, mock) from runtime dependencies
+     using [project.optional-dependencies] in pyproject.toml.
+    - Updated the README to document the new
+      development setup using pip install -e .[dev].
+    - Removed unsupported Python version specifiers from requirements.txt.
+    - Ensured all documentation and configuration files are consistent with
+      Python 3.10+.
+    - All tests pass with the new setup.
+  - Updated approach in PR 56 to pull version from pyproject.toml
+  - Removed all Python 3.10 references
 
 ## [v2.3.0] - 2024-09-11
 
