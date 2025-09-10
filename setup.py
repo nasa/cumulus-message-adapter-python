@@ -3,8 +3,7 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
-import imp
-
+import importlib.util
 
 here = path.abspath(path.dirname(__file__))
 
@@ -18,7 +17,14 @@ dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' in
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-__version__ = imp.load_source('version', 'version.py').__version__
+def _load_version_from_file(filepath: str) -> str:
+    spec = importlib.util.spec_from_file_location("version", filepath)
+    version = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(version)
+    return version.__version__
+
+
+__version__ = _load_version_from_file('version.py')
 
 # Arguments marked as "Required" below must be included for upload to PyPI.
 # Fields marked as "Optional" may be commented out.
