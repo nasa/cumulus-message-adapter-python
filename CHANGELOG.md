@@ -6,14 +6,23 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
+## [v2.4.0] - 2025-09-10
+
+- **CUMULUS-4165
+  - Update build/minimum python version to 3.12
+
 ## [v2.3.0] - 2024-09-11
+
 - **CUMULUS-3838**
   - Update cumulus-message-adapter dependency version to 2.0.4
   - Remove testing for python3.8
 
 ## [v2.2.0] - 2023-05-11
+
 - **CUMULUS-3270**
-  - Update to utilize `cumulus-message-adapter` >= 2.0.3, to pick up updated Python and boto3 SDK version.
+
+  - Update to utilize `cumulus-message-adapter` >= 2.0.3, to pick up updated Python
+  and boto3 SDK version.
   - Update to Python 3.10 removing 3.6 (EOL)
   - change test framework to nose2, as nose does not work with the new Python version
 
@@ -32,7 +41,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [v2.0.0] - 2021-12-21
 
 - **CUMULUS-2577**
-  - Update to match call signatures in [cumulus-message-adapter](https://github.com/nasa/cumulus-message-adapter) 2.0.0.  This release requires `cumulus-message-adapter` > 2.0.0.
+
+  - Update to match call signatures in [cumulus-message-adapter](https://github.com/nasa/cumulus-message-adapter)
+   2.0.0.  This release requires `cumulus-message-adapter` > 2.0.0.
   - Update test fixture to remove deprecated 'workflow_config' config key
 
 ## [v1.2.2] - 2021-11-04
