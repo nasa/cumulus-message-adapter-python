@@ -43,7 +43,7 @@ setup(
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        'Programming Language :: Python :: 3.10'
+        'Programming Language :: Python :: 3.12'
     ],
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),

@@ -1,7 +1,7 @@
 # Example usage of cumulus-message-adapter-python
 
 ## Set up
-- This example assumes you're using python 3.10
+- This example assumes you're using python 3.12
 - Clone the cumulus-message-adapter-python repo
 - Create a separate virtualenv for this example
   - `mkvirtualenv example-task`
