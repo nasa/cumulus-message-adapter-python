@@ -27,6 +27,7 @@ references:
   
 jobs:
   build_python312:
+    <<: *container_python312
     steps:
       - checkout
       - *restore_cache_python312
