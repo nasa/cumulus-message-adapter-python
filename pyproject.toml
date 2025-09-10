@@ -1,14 +1,14 @@
 
 [project]
 name = "cumulus-message-adapter-python"
-version = "0.0.1" # Will update from version.py
+version = "2.4.0" 
 description = "A handler library for cumulus tasks written in python"
 authors = [
     { name = "Cumulus Authors" }
 ]
 readme = "README.md"
 license = { file = "LICENSE" }
-requires-python = ">=3.10, <4.0"
+requires-python = ">=3.12, <4.0"
 dependencies = [
     "cumulus-message-adapter~=2.0.4"
 ]
