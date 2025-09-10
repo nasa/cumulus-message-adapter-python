@@ -1,0 +1,37 @@
+
+[project]
+name = "cumulus-message-adapter-python"
+version = "0.0.1" # Will update from version.py
+description = "A handler library for cumulus tasks written in python"
+authors = [
+    { name = "Cumulus Authors" }
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.10, <4.0"
+dependencies = [
+    "cumulus-message-adapter~=2.0.4"
+]
+
+[project.optional-dependencies]
+dev = [
+    "nose2",
+    "mock"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {attr = "version.__version__"}
+
+[tool.setuptools.package-data]
+"*" = ["requirements.txt", "README.md", "version.py"]
