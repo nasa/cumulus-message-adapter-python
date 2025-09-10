@@ -3,21 +3,27 @@ from setuptools import setup, find_packages
 # To use a consistent encoding
 from codecs import open
 from os import path
+import tomllib
 import importlib.util
 
 here = path.abspath(path.dirname(__file__))
 
-def _load_version_from_file(filepath: str) -> str:
-    spec = importlib.util.spec_from_file_location("version", filepath)
-    version = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(version)
-    return version.__version__
+def _read_version():
+    with open(path.join(here, "pyproject.toml"), "rb") as f:
+        toml_data = tomllib.load(f)
+    # PEP 621 location
+    proj = toml_data.get("project", {})
+    if "version" in proj:
+        return proj["version"]
+    raise RuntimeError("Version not found in pyproject.toml")
+
 
 # get the dependencies and installs
 with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     all_reqs = f.read().split('\n')
 install_requires = [x.strip() for x in all_reqs if 'git+' not in x]
 dependency_links = [x.strip().replace('git+', '') for x in all_reqs if 'git+' in x]
+__version__ = _read_version()
 
 # Get the long description from the README file
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -27,7 +33,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 # Fields marked as "Optional" may be commented out.
 
 setup(
-    name='cumulus-message-adapter-python',  # Required
+    name='cumulus_message_adapter_python',  # Required
 
     # Versions should comply with PEP 440:
     # https://www.python.org/dev/peps/pep-0440/
