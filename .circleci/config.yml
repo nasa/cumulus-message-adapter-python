@@ -12,21 +12,14 @@ references:
     working_directory: ~/repo
 
   # Download and cache dependencies
-  restore_cache_python310: &restore_cache_python310
-    restore_cache:
-      keys:
-        - v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
-        # fallback to using the latest cache if no exact match is found
-        - v1-dependencies-
-  
-  restore_cache_python38: &restore_cache_python38
+  restore_cache_python312: &restore_cache_python312
     restore_cache:
       keys:
         - v1-dependencies-{{ checksum "requirements.txt" }}-{{ checksum "requirements-dev.txt" }}
         # fallback to using the latest cache if no exact match is found
         - v1-dependencies-
 
-  save_cache_python310: &save_cache_python310
+  save_cache_python312: &save_cache_python312
     save_cache:
       paths:
         - ~/venv312
@@ -37,7 +30,7 @@ jobs:
     <<: *container_python312
     steps:
       - checkout
-      - *restore_cache_python310
+      - *restore_cache_python312
       - run:
           name: install dependencies
           command: |
@@ -47,7 +40,7 @@ jobs:
             pip install -r requirements.txt
             pip install -r requirements-dev.txt
             pip install .
-      - *save_cache_python310
+      - *save_cache_python312
       - run:
           name: run tests
           environment:
@@ -60,7 +53,7 @@ jobs:
     <<: *container_python312
     steps:
       - checkout
-      - *restore_cache_python310
+      - *restore_cache_python312
       - run:
           name: Deploy to PyPi
           command: |
