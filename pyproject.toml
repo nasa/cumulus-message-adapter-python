@@ -10,7 +10,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.12, <4.0"
 dependencies = [
-    "cumulus-message-adapter~=2.0.4"
+    "cumulus-message-adapter~=2.0.5"
 ]
 
 [project.optional-dependencies]
