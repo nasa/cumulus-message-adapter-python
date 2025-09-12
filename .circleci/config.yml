@@ -80,10 +80,14 @@ workflows:
     jobs:
       - build_python312
       - publish_release:
+          requires:
+            - build_python312
           filters:
             branches:
               only: master
       - publish_pypi:
+          requires:
+            - build_python312      
           filters:
             branches:
               only: master

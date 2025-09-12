@@ -6,7 +6,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
 ## Unreleased
 
-- **CUMULUS-4165
+- **CUMULUS-4165**
   - Update build/minimum supported python version to 3.12
   - Merged in suggested changes from [PR 56](https://github.com/nasa/cumulus-message-adapter-python/pull/56):
     - Refactored packaging to use a modern,
