@@ -1,2 +1,3 @@
 # Main dependency
 cumulus-message-adapter~=2.0.5
+pyrsistent >=0.20.0
