@@ -47,13 +47,13 @@ setup(
     long_description_content_type='text/markdown',
     url='https://github.com/cumulus-nasa/cumulus-message-adapter-python',  # Optional
     author='Cumulus Authors',  # Optional
-    python_requires='~=3.11',
+    python_requires='~=3.12, <4.0',
     author_email='info@developmentseed.org',  # Optional
     classifiers=[  # Optional
         # Indicate who your project is intended for
         'Intended Audience :: Developers',
         'Topic :: Software Development :: Build Tools',
-        'Programming Language :: Python :: 3.11'
+        'Programming Language :: Python :: 3.12'
     ],
     keywords='nasa cumulus',  # Optional
     packages=find_packages(exclude=['.circleci', 'contrib', 'docs', 'tests']),
