@@ -4,16 +4,36 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 
-## Unreleased
+## [v2.4.0] - 2025-09-15
+
+- **CUMULUS-4165**
+  - Update build/minimum supported python version to 3.12
+  - Merged in suggested changes from [PR 56](https://github.com/nasa/cumulus-message-adapter-python/pull/56):
+    - Refactored packaging to use a modern,
+    standard approach with pyproject.toml (PEP 621/517/518)
+    - Separated development dependencies (nose2, mock) from runtime dependencies
+     using [project.optional-dependencies] in pyproject.toml.
+    - Updated the README to document the new
+      development setup using pip install -e .[dev].
+    - Removed unsupported Python version specifiers from requirements.txt.
+    - Ensured all documentation and configuration files are consistent with
+      Python 3.10+.
+    - All tests pass with the new setup.
+  - Updated approach in PR 56 to pull version from pyproject.toml
+  - Removed all Python 3.10 references
 
 ## [v2.3.0] - 2024-09-11
+
 - **CUMULUS-3838**
   - Update cumulus-message-adapter dependency version to 2.0.4
   - Remove testing for python3.8
 
 ## [v2.2.0] - 2023-05-11
+
 - **CUMULUS-3270**
-  - Update to utilize `cumulus-message-adapter` >= 2.0.3, to pick up updated Python and boto3 SDK version.
+
+  - Update to utilize `cumulus-message-adapter` >= 2.0.3, to pick up updated Python
+  and boto3 SDK version.
   - Update to Python 3.10 removing 3.6 (EOL)
   - change test framework to nose2, as nose does not work with the new Python version
 
@@ -32,7 +52,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 ## [v2.0.0] - 2021-12-21
 
 - **CUMULUS-2577**
-  - Update to match call signatures in [cumulus-message-adapter](https://github.com/nasa/cumulus-message-adapter) 2.0.0.  This release requires `cumulus-message-adapter` > 2.0.0.
+
+  - Update to match call signatures in [cumulus-message-adapter](https://github.com/nasa/cumulus-message-adapter)
+   2.0.0.  This release requires `cumulus-message-adapter` > 2.0.0.
   - Update test fixture to remove deprecated 'workflow_config' config key
 
 ## [v1.2.2] - 2021-11-04

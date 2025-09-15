@@ -1,1 +1,2 @@
-cumulus-message-adapter~=2.0.4
+# Main dependency
+cumulus-message-adapter~=2.0.5
